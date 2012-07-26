@@ -1,25 +1,17 @@
-\name{vfColorMap}
-\alias{vfColorMap}
-\title{Color Map for sensitivities}
-\description{This function geneartes an rgb value to represents sensitivity at each location.}
-\usage{vfColorMap( map )}
+\name{vfcolormap}
+\alias{vfcolormap}
+\title{Color code for TD or PD probability maps}
+\description{returns the RGB values specifying the color code for the TD or PD probability maps}
+\usage{vfcolormap( map )}
 \arguments{
-  \item{map}{deviation probability object}
-}
-\details{This function geneartes an rgb value to represents sensitivity at each location.}
-
-\value{
-something
+  \item{map}{array with the percentile for TD or PD probability map}
 }
 
-\references{
-something
-}
-
-\seealso{\code{\link{vfplot}}}
+\seealso{\code{\link{vfplot}}, \code{\link{vfgrayscale}}}
 
 \examples{
-#vfColorMap( map )
+# DO NOT EXECUTE
+#vfcolormap( map )
 }
 
 \author{Chaitanya Khadilkar <chaikhad@indiana.edu>, Ivan Marin-Franch <imarinfr@indiana.edu>}

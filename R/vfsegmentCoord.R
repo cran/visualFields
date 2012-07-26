@@ -1,4 +1,4 @@
-vfsegmentCoord <- function( lineMap, length = 3.75 ) {
+vfsegmentcoord <- function( lineMap, length = 3.75 ) {
 
   length <-  length / 2
 
