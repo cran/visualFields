@@ -1,4 +1,4 @@
-vfColorMap <- function( map ) {
+vfcolormap <- function( map ) {
 
   rgbval                    <- NULL
   rgbval$red[1:ncol(map)]   <- c( NA )
