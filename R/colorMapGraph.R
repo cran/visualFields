@@ -1,17 +1,23 @@
-colorMapGraph <- function( ncol = 3, notSeenAsBlack = TRUE, txtfont = "mono", pointsize = 7,
+colormapgraph <- function( ncol = 3, mapval = nv$pmapsettings, notSeenAsBlack = TRUE, txtfont = "mono", pointsize = 7,
                            outerSymbol = "circles", innerSymbol = "circles",
                            outerSize = 1, innerSize = 1,
                            outerInch = 0.2, innerInch = 0.1 ) {
-  total <- nrow( nv$pmapsettings )
+  mapval$cutoffs[ length( mapval$cutoffs ) ] <-
+          paste( ">",  mapval$cutoffs[ length( mapval$cutoffs ) - 1 ], sep = "" )
+
+  total <- nrow( mapval )
   if( notSeenAsBlack ) total <- total + 1
-  nrow <- floor( total / ncol )
+  nrow <- ceil( total / ncol )
+
 # get coordinates to plot
   coords   <- NULL
-  coords$x <- rep( c( 1:ncol ), nrow )
-  coords$y <- rep( c( 1:nrow ), ncol )
+  coords$x <- ( c( 1:total ) - 1 ) %% ncol + 1
+  coords$y <- ( c( 1:total ) ) %% nrow + 1
+  
   coords   <- as.data.frame( coords )
   coords   <- coords[order( coords$x ),]
   coords   <- coords[order( coords$y, decreasing = TRUE ),]
+  
   xmin     <- min( coords$x ) - 1 / ncol
   xmax     <- max( coords$x ) + 1 / ncol
   ymin     <- min( coords$y ) - 1 / nrow
@@ -25,17 +31,17 @@ colorMapGraph <- function( ncol = 3, notSeenAsBlack = TRUE, txtfont = "mono", po
     rgbval$red[idx]   <- 0
     rgbval$green[idx] <- 0
     rgbval$blue[idx]  <- 0
-    txtval[idx] <- "NS"
+    txtval[idx]       <- "NS"
   }
-  for( i in 1:nrow( nv$pmapsettings ) ) {
-    rgbval$red[i+idx]   <- nv$pmapsettings$red[i]
-    rgbval$green[i+idx] <- nv$pmapsettings$green[i]
-    rgbval$blue[i+idx]  <- nv$pmapsettings$blue[i]
-    txtval[i+idx]       <- as.character( nv$pmapsettings$cutoffs[i] )
+  for( i in 1:nrow( mapval ) ) {
+    rgbval$red[i+idx]   <- mapval$red[i]
+    rgbval$green[i+idx] <- mapval$green[i]
+    rgbval$blue[i+idx]  <- mapval$blue[i]
+    txtval[i+idx]       <- as.character( mapval$cutoffs[i] )
   }
   rgbval <- rgb( as.data.frame( rgbval ) )
 
-#  opar <- par( no.readonly = TRUE )
+# opar <- par( no.readonly = TRUE )
   oplt    <- par()$plt
   ops     <- par()$ps
   ofamily <- par()$family
@@ -51,10 +57,10 @@ colorMapGraph <- function( ncol = 3, notSeenAsBlack = TRUE, txtfont = "mono", po
   innerDimensions <- t( matrix( data = rep( innerSize,nrow( coords ) ),nrow = length( innerSize ), ncol = nrow( coords ) ) )
   evaltxt <- paste( "symbols( coords$x, coords$y, ", innerSymbol," = innerDimensions, add = TRUE, inches = innerInch, bg = 'white', lwd = 1, fg = 'white' )", sep = "" )
   eval( parse( text = evaltxt ) )
+
   text( coords$x, coords$y, labels = txtval, adj = 0.525 )
 
   par( plt = oplt )
   par( ps = ops )
   par( family = ofamily )
-
 }
