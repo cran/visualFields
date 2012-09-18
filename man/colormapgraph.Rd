@@ -1,11 +1,16 @@
-\name{colorMapGraph}
-\alias{colorMapGraph}
+\name{colormapgraph}
+\alias{colormapgraph}
 \title{color legend for p-values in td and pd probability plots}
 \description{It geneartes color legend for p-values in td and pd probability plots}
-\usage{colorMapGraph( ncol = 3, notSeenAsBlack = TRUE, txtfont = "mono", pointsize = 7, outerSymbol = "circles", innerSymbol = "circles", outerSize = 1, innerSize = 1, outerInch = 0.2, innerInch = 0.1 )}
+\usage{colormapgraph( ncol = 3, mapval = nv$pmapsettings, notSeenAsBlack = TRUE,
+               txtfont = "mono", pointsize = 7,
+               outerSymbol = "circles", innerSymbol = "circles",
+               outerSize = 1, innerSize = 1,
+               outerInch = 0.2, innerInch = 0.1 )}
 \arguments{
   \item{ncol}{number of columns in where to show the color symbols. Default is \code{3}}
   \item{notSeenAsBlack}{Add a black color-code representing non-seen to the color scheme of the probability maps for td and pd}
+  \item{mapval}{map and cutoff values to be used for the generation of the color map. Default is \code{nv$pmapsettings}}
   \item{txtfont}{font of the text with visual-sensitivity values. Default is \code{mono}}
   \item{pointsize}{size of the text with visual-sensitivity values. Default is \code{7}}
   \item{outerSymbol}{The  outer symbol at all locations. Can be any of circles, squares, rectangles, stars. Default is \code{circle}}
@@ -22,7 +27,7 @@ it generates a graph with the color legend for p-values in td and pd probability
 \seealso{\code{\link{vfcolormap}}}
 
 \examples{
-colorMapGraph()
+colormapgraph()
 }
 
 \author{Ivan Marin-Franch <imarinfr@indiana.edu>}
