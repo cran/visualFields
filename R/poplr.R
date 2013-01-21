@@ -1,5 +1,6 @@
-poplr <- function( vf, nperm = 5000, type = "slr", sl_test = NULL,
-                   typecomb = "fisher", details = FALSE ) {
+poplr <- function( vf, nperm = 5000, type = "slr", truncVal = 1,
+                   sl_test = NULL, typecomb = "fisher",
+                   details = FALSE ) {
 ##############
 # input checks
 ##############
@@ -15,16 +16,15 @@ poplr <- function( vf, nperm = 5000, type = "slr", sl_test = NULL,
   if( nperm < 5 ) stop( "number of permutations was lower than 5" )
   if( nperm > 1000000 ) stop( "please don't! Don't use more than a million permutations!" )
   if( ( type != "slr" & !is.null( sl_test ) ) ) stop( "tests about slopes being larger than a value are only valid for slr analysis" )
-
+# truncation must be between zero and one
+  if( truncVal <= 0 | truncVal > 1 ) stop("truncation must be between 0 and 1")
 
 # permutation matrix
   porder <- make.permSpace( c( 1:nrow( vf ) ), nperm )$permID
 
   res             <- NULL
-  res$vfdata      <- vf[1,]
-# get average age and average VF values in res$vfdata
-  res$vfdata$sage                            <- mean( vf$sage )
-  res$vfdata[1,vfsettings$locini:ncol( vf )] <- colMeans( vf[,vfsettings$locini:ncol( vf )] )
+# get last VF in res$vfdata
+  res$vfdata      <- vf[nrow( vf ),]
 # get and remove blind spot
   evaltxt <- paste("vfsettings$", vf$tpattern[1], "$bs", sep = "")
   bs <- eval(parse(text = evaltxt)) + vfsettings$locini - 1
@@ -35,9 +35,9 @@ poplr <- function( vf, nperm = 5000, type = "slr", sl_test = NULL,
   res$type     <- type
   res$typecomb <- typecomb
 # get the p-value statitics of the permuation analysis ...
-  pstat    <- poplr_pstat( vf, porder = porder, type = "slr",  sl_test = sl_test )
+  pstat    <- poplr_pstat( vf, porder = porder, type = "slr", sl_test = sl_test )
 # ... and the actual analysis
-  cstat    <- poplr_cstat( pstat$pval, typecomb = typecomb )
+  cstat    <- poplr_cstat( pstat$pval, typecomb = typecomb, truncVal = truncVal )
   if( type == "slr" ) {
     res$sl   <- pstat$sl[1,]
     res$int  <- pstat$int[1,]

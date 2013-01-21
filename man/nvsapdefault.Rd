@@ -1,11 +1,11 @@
-\name{sapsunyiunv}
-\alias{sapsunyiunv}
+\name{nvsapdefault}
+\alias{nvsapdefault}
 \docType{data}
-\title{SUNY-IU normative reference values for Standard Automatic Perimetry}
+\title{SUNY-IU normative reference values for static automated perimetry}
 \description{
-Normative reference values or (normative values or nv for short) for Standard Automatic Perimetry (SAP) obtained from a combination of control subjects from SUNY (Mitchel W Dul) and IU (William H Swanson and Victor E Malinovsky) databases.
+Normative reference values or (normative values or nv for short) for static automated perimetry (SAP) obtained from a combination of control subjects from SUNY and IU databases.
 }
-\usage{data( sapsunyiunv )}
+\usage{data( nvsapdefault )}
 \format{This normative-value object is defined by some tables, variables, and sub-structures, some of which are mandatory and some which are not. Importantly an age linear model must be included for test pattern (24-2) and presentation algorithm (e.g. SITA standard). Also important are the tables specifying the settings. Think of the normative-value object as a structure with several levels. The first level has three main substructures with settings:
 \describe{
 \item{\code{pmapsettings}}{\bold{mandatory}. Information about which percentiles are used for location-wise analysis in this nv and their corresponding color coding for display. This is a table with four columns. First column specifies the percentiles (in percent) for \code{cutoffs} and the other three columns are the corresponding RGB values (defined from 0 to 1) specifying the color code to use for values below that percentile}
@@ -25,8 +25,15 @@ From here age linear models, percentile values, etc are defined for combination 
   }
 }
 
-\references{ADD REFERENCES HERE}
+\references{
+[1] ADD REFERENCE FOR 24-2
+
+[2] H. J. Wyatt, M. W. Dul, and W. H. Swanson. \emph{Variability of visual field measurements is correlated with the gradient of visual sensitivity}. Vision Research, 47, 2007.
+
+[3] A. Shafi, W. H. Swanson, and M. W. Dul. \emph{Structure and Function in Patients with Glaucomatous Defects Near Fixation}. Optometry and Vision Science, 88, 2011.
+
+}
 
 \keyword{datasets}
 
-\author{Ivan Marin-Franch <imarinfr@indiana.edu>, William H Swanson, Victor Malinovsky, Mitchell Dul}
+\author{Ivan Marin-Franch <imarinfr@indiana.edu>, William H Swanson}

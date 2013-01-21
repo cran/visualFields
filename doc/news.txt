@@ -102,4 +102,21 @@ v0.2-7 11/11/2012
 In plots of visual sensitivities show <0 for negative values and a couple of patches
 
 v0.2-8 11/13/2012
-removed reliable controls from the normative values. Added option to capitalize tags or not in xmlblock and xlmitem functions.
+removed unreliable controls from the normative values. Added option to capitalize tags or not in xmlblock and xlmitem functions
+
+v0.2-9 12/01/2012
+a patch in hist_poplr.R
+
+v0.2-10 12/03/2012
+Adapted PoPLRs to accept analysis with TD and PD values. Also added the possibility for a truncation value
+
+v0.2-11 01/18/2013
+change vflayout_poplr and vfplot_poplr to show years to blindness instead of years blind
+
+v0.2-12 01/18/2013
+created an environment vfenv to fix setnv(), so that nv is no longer in the .GlobalEnv which R does not allowed to modify from within a function
+
+added 10-2 Wyatt, et al control data
+
+generated 10-2 normative values from the control data
+changed name standard for some datasets
