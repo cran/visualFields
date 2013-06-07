@@ -36,7 +36,9 @@ loadvfxml <- function( filename, patternMap, typeData = "vf", typeSubject = "pwg
   xmlobject$tdate      <- xmlitem( "VISIT_DATE", xmllines )
   xmlobject$ttime      <- xmlitem( "EXAM_TIME", xmllines )
   xmlobject$stype      <- typeSubject
-  xmlobject$sage       <- as.numeric( as.Date( xmlitem( "VISIT_DATE", xmllines ), format = "%Y-%m-%d" ) - as.Date( xmlitem( "BIRTH_DATE", xmllines ), format = "%Y-%m-%d" ) ) / 365
+  dob                  <- as.Date( xmlitem( "BIRTH_DATE", xmllines ), format = "%Y-%m-%d" )
+  visitdate            <- as.Date( xmlitem( "VISIT_DATE", xmllines ), format = "%Y-%m-%d" )
+  xmlobject$sage       <- agecalc( dob, visitdate )
   tfname               <- xmlitem( "IMAGE_FILE_NAME", xmllines )
 # SITE 0 is OS and 1 is OD, or so it seems
   site                 <- xmlitem( "SITE", xmllines )
