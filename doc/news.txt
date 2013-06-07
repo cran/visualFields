@@ -155,3 +155,6 @@ change in functionality of flip. Function poplr.r modified accordingly.
 
 v0.3-2 07/06/2013
 fix small bugs. Incorrect age calculation in loadvfxml and incorrect order for false positives, false negatives, and fixation loses in vflayout
+
+v0.3-3 16/06/2013
+allow calculation of age by dividing by a factor days per year

@@ -1,20 +1,16 @@
-vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
-                      filename = NULL ) {
+vflayout <- function( vf, pwidth = 8.27,
+                      pheight = 11.69, margin = 0.25,
+                      filename = NULL,
+                      ffamily = "Helvetica", sizetxt = 12,
+                      sizetxtSmall = 8, ffmailyvf = "Times",
+                      pointsize = 5,
+                      outerSymbol = "circle", outerInch = 0.13,
+                      innerSymbol = "circle", innerInch = outerInch / 1.9,
+                      lengthLines = 0, thicknessLines = 0 ) {
 
   if( nrow( vf ) > 1 ) {
     stop("Error! vf cannot have more than 1 rows")
   }
-  
-  ffamily        <- "Helvetica"
-  sizetxt        <- 12
-  sizetxtSmall   <- 8
-  ffmailyvf      <- "Times"
-  pointsize      <- 5
-  outerSymbol    <- "circle"
-  outerInch      <- 0.13
-  innerSymbol    <- "circle"
-  innerInch      <- outerInch / 1.9
-  thicknessLines <- 0
 
 # open window wiht A4 page
   if( is.null( filename ) ) {
@@ -44,19 +40,15 @@ vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
   if( vf$tpattern == "p24d2" ) {
     xminmax     <- 30
     yminmax     <- 30
-    lengthLines <- 0
   } else if( vf$tpattern == "p30d2" ) {
     xminmax     <- 30
     yminmax     <- 30
-    lengthLines <- 0
   } else if( vf$tpattern == "p10d2" ) {
     xminmax     <- 10
     yminmax     <- 10
-    lengthLines <- 0
   } else if( vf$tpattern == "sgrnfl" ) {
     xminmax     <- 30
     yminmax     <- 30
-    lengthLines <- 0
   } else {
     xminmax <- 100
     yminmax <- 100
