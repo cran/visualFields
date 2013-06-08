@@ -150,3 +150,8 @@ R.methodsS3 	1.2.2 	2012-02-29
 Hmisc		3.9-3	2012-03-27
 survival	2.36-14	2012-04-25
 
+v0.3-1 06/06/2013
+change in functionality of flip. Function poplr.r modified accordingly.
+
+v0.3-2 07/06/2013
+fix small bugs. Incorrect age calculation in loadvfxml and incorrect order for false positives, false negatives, and fixation loses in vflayout

@@ -236,9 +236,9 @@ vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
 ######################################################
   seekViewport( "infotest1" )
 
-  text <- "fixation losses"
-  text <- paste( text, "false positives", sep = "\n" )
+  text <- "false positives"
   text <- paste( text, "false negatives", sep = "\n" )
+  text <- paste( text, "fixation losses", sep = "\n" )
   grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
 
   seekViewport( "infotest2" )
