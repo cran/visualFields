@@ -1,7 +1,7 @@
-c1b86f8c49bff3ebd5d7ea5ee32d2914 *DESCRIPTION
+3478e8c49eda618ba090e13f17845553 *DESCRIPTION
 dd7d63a2b575760facb8ee628f9ccdd8 *NAMESPACE
 b24f8baebdd07409fe5a65ef119e0842 *R/ageLinearModel.R
-57d975e97f37888fe7e90cf640a6f31a *R/agecalc.R
+5191639e522b4e952cadc2ae51595d70 *R/agecalc.R
 879d4d70f5cbff94bc27e4dc7af039c7 *R/bebie.R
 6ec7ad235501eaa44471e600871be31f *R/colormapgraph.R
 04fcd93927aa4f0b80dff43cc247fcfe *R/createviewport.R
@@ -12,7 +12,7 @@ e1218ce666c84f29fab2e8031f054a29 *R/ghpostd.R
 a9407c0308e8f5a968f5f8adae92b780 *R/hist_poplr.R
 9f64013f85fc05c20ddac80492a41094 *R/lidLensArtifact.R
 46f6cd0379927cc6a2bca5d9f69c731b *R/loadvfcsv.R
-f8e54af27f8bc200068f2b41e740bcfc *R/loadvfxml.R
+a43fe03d915ccc151cf7271887c88fe9 *R/loadvfxml.R
 bbb6889ec11e0bb0ed8727bf019e33c5 *R/loadvfxmlbatch.R
 23480e56ff89cb6593082c6bd161127a *R/locperc.R
 1185df6030f7acf4c31aa552cc888762 *R/pdpmap.R
@@ -38,9 +38,9 @@ bc014bddfda9131dc5bc705c092da7fa *R/tdranknv.R
 5033ed36290af2239d7bb39df03c0a39 *R/vfindex.R
 16e81b0ebac98f4282a29c83b2df5ffb *R/vfindexpmap.R
 f68ec086f5ddbfecbc736af2ec4a3614 *R/vfiperc.R
-7dc810083fd06e7964ea0027b5c63acc *R/vflayout.R
-02218f76c6561c6fe13281bb3192b2cd *R/vflayout_legoplot.R
-696f0650701d5e48980b8dbaa4478d26 *R/vflayout_poplr.R
+7aa0ee8084d5b863553bc99067a71173 *R/vflayout.R
+35e187c7d8f1105f9a61ce955ea624e2 *R/vflayout_legoplot.R
+ee5c2e9f0f028fcb55222aa99752f53a *R/vflayout_poplr.R
 49209aff5bc9d5e8282fb2de97f45d84 *R/vfplot.R
 7131369bf5213efc128751b6c196b8f1 *R/vfplot_poplr.R
 f3de136d9aec39c459c94c639a71bfc7 *R/vfplotloc.R
@@ -66,10 +66,10 @@ b391f922e3184e15b6e6b59cfc65a5cd *data/vfShafi2011.rda
 664b7093c47c217463831d648907ad27 *data/vfenv.rda
 982006d29c2590567ae2c1d48244e24e *data/vfidefault.rda
 4a058d930f4c0830aadae426dca31ffa *data/vfsettings.rda
-47972bd89249b3d4725d769ffe8d3cb8 *doc/news.txt
+8cd2ff1a8c1f99f3f26fb7015220d9eb *doc/news.txt
 35c6e7944ee3c96c19b38219fd093969 *inst/CITATION
 86496e02b949d8edf6a2b1a2c86951d2 *man/ageLinearModel.Rd
-cb025a6b81f8743f479fb89f1234596f *man/agecalc.Rd
+887e844178cf024e228f77d9ac1a563f *man/agecalc.Rd
 0f3b9413ac0f2a68044560044c52e4d6 *man/bebie.Rd
 1fc825dc47f1288656c6c39ef1b38f50 *man/colormapgraph.Rd
 887964687c3b0c0ac482a600e7f4dcbc *man/createviewport.Rd
@@ -82,7 +82,7 @@ e7e04130d03d412720aeddd798a3211b *man/filterReliability.Rd
 3c79229ddc353da28eb42eb0c17e4bd4 *man/hist_poplr.Rd
 d30dcdf703b300da71481bd44c7ace73 *man/lidLensArtifact.Rd
 9b59958c5acfc2bb45c62fd6c83ff2a4 *man/loadvfcsv.Rd
-a52b3f09a2e331a49174132b62816004 *man/loadvfxml.Rd
+ca15585a7b7127ecc9d32c9da44bfd75 *man/loadvfxml.Rd
 e9da7cd68299e3a61419b9baba39929b *man/loadvfxmlbatch.Rd
 578e9cd459c9278d9e79a23855a528a8 *man/locperc.Rd
 d87718450758e208e17d9ee1d692bc01 *man/nvcspsgalpha.Rd
@@ -117,9 +117,9 @@ a263c8630c0ade40cb1add2a240e6b08 *man/vfidefault.Rd
 c07dcc3c9302dea974f35260f54f54bf *man/vfindex.Rd
 bd4febb9d0550deaed604d15b2301cab *man/vfindexpmap.Rd
 5b58006ba21ee0aa90b2a77caf9e54a9 *man/vfiperc.Rd
-b80ac5b7039288a25977d783c73f8772 *man/vflayout.Rd
-3396062d5d6a199baed76ba37cc4da2d *man/vflayout_legoplot.Rd
-05c219240bb3f0ff9df8d93d8a946e19 *man/vflayout_poplr.Rd
+41b5c2d3f220797629630dc6500c63b3 *man/vflayout.Rd
+7e2991fc0904c30e9c1ab205e441df92 *man/vflayout_legoplot.Rd
+eb569e5a5e4202d1b9c9b55b04224363 *man/vflayout_poplr.Rd
 9f6db5d1ba3ad386661eab78d2377787 *man/vfobject.Rd
 1308f84f43b18b17744bc6574913e86d *man/vfplot.Rd
 5264ff4bbef778613a7eb9e54c7d93d8 *man/vfplot_poplr.Rd
