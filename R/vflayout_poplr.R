@@ -145,15 +145,23 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   vf1          <- round( colMeans( vf[idx1, locvalsidx] ) )
 # open window wiht A4 page
   if( is.null( filename ) ) {
+    device <- options( "device" )
     if( .Platform$OS.type == "unix" ) {
       if( Sys.info()["sysname"] == "Darwin" ) {
-        quartz( width = pwidth, height = pheight, dpi = 85 )
+        options( device = "quartz" )
+        dev.new( width = pwidth, height = pheight, dpi = 85 )
+#        quartz( width = pwidth, height = pheight, dpi = 85 )
       } else {
-        x11( xpos = 0, ypos = 0, width = pwidth, height = pheight )
+        options( device = "x11" )
+        dev.new( width = pwidth, height = pheight )
+#        x11( xpos = 0, ypos = 0, width = pwidth, height = pheight )
       }
     } else{
-      windows( xpos = 0, ypos = 0, width = pwidth, height = pheight, rescale = "fixed" )
+      options( device = "windows" )
+      dev.new( width = pwidth, height = pheight, rescale = "fixed" )
+#      windows( xpos = 0, ypos = 0, width = pwidth, height = pheight, rescale = "fixed" )
     }
+    options( device = device )
   } else {
     pdf( width = pwidth, height = pheight, file = filename )
   }
