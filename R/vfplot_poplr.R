@@ -83,16 +83,13 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE, txtfont = "mono",
       if( Sys.info()["sysname"] == "Darwin" ) {
         options( device = "quartz" )
         dev.new( width = width, height = height, dpi = 85 )
-        #        quartz( width = width, height = height, dpi = 85 )
       } else {
         options( device = "x11" )
         dev.new( width = width, height = height )
-        #        x11( xpos = 0, ypos = 0, width = width, height = height )
       }
     } else{
       options( device = "windows" )
       dev.new( width = width, height = height, rescale = "fixed" )
-      #      windows( xpos = 0, ypos = 0, width = width, height = height, rescale = "fixed" )
     }
     options( device = device )
   }

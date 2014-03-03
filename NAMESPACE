@@ -1,3 +1,8 @@
+import(Hmisc)
+import(flip)
+import(gridBase)
+import(matrixStats)
+
 export( ageLinearModel,
         filterReliability,
 	lidLensArtifact,
@@ -49,4 +54,11 @@ export( ageLinearModel,
 	vfsort,
 	vfselectvisit,
 	ringmapgraph,
-	agecalc )
+	agecalc,
+	tdrankglm,
+	ghranktd,
+	pdvalghr,
+	pdpmapghr,
+	sdnvghr,
+	vflayoutghr,
+	tdrankadjperc )

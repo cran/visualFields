@@ -48,7 +48,7 @@ bebie <- function( tdr, type = "conventional", diff = TRUE, percentiles = TRUE,
       if( type == "conventional" ) {
         evaltxt <- paste( "vfenv$nv$", tdr$tpattern, "_", tdr$talgorithm, "$perctdrankadj7", sep = "" )
       } else{
-        evaltxt <- paste( "vfenv$nv$", tdr$tdr$tpattern, "_", tdr$tdr$talgorithm, "$perctdrankadjgs", sep = "" )
+        evaltxt <- paste( "vfenv$nv$", tdr$tdr$tpattern, "_", tdr$tdr$talgorithm, "$perctdrankadjghr", sep = "" )
       }
     } else {
       if( type == "conventional" ) {
