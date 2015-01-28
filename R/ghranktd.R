@@ -30,8 +30,8 @@ ghranktd <- function( td, minPts = 2, strategy = "isospaced", withinNormal = 95,
 
 # get p-values, convert vf-object to arrays of values, and remove the blind spot
   tdp    <- tdpmap( td )
-  td     <- as.numeric( td[,vfsettings$locini:(vfsettings$locini + locnum - 1 )] )
-  tdp    <- as.numeric( tdp[,vfsettings$locini:(vfsettings$locini + locnum - 1 )] )
+  td     <- as.numeric( td[,visualFields::vfsettings$locini:(visualFields::vfsettings$locini + locnum - 1 )] )
+  tdp    <- as.numeric( tdp[,visualFields::vfsettings$locini:(visualFields::vfsettings$locini + locnum - 1 )] )
   td     <- td[-bspos]
   tdp    <- tdp[-bspos]
   locnum <- locnum - length( bspos )

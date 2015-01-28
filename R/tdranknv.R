@@ -15,7 +15,7 @@ tdranknv <- function( td, smooth = TRUE, smoothFunction = tdrankglm ) {
   }
 
 # get settings for the pattern of test locations
-  locini   <- vfsettings$locini
+  locini   <- visualFields::vfsettings$locini
   texteval <- paste( "vfsettings$", td$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 

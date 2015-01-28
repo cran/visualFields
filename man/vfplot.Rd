@@ -3,7 +3,7 @@
 \title{visual field plot}
 \description{plots location-specific sensitivity thresholds, or TD or PD values at each location of the visual field with the corresponding color code for the probability map}
 \usage{vfplot( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
-        txtfont = "Helvetica", pointsize = 7, width = 6,
+        txtfont = "serif", pointsize = 7, width = 6,
         xminmax = 29, yminmax = 29,
         outerSymbol = "circles", innerSymbol = "circles",
         outerSize = 1, innerSize = 1,

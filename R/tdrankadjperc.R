@@ -1,5 +1,6 @@
 tdrankadjperc <- function( td, percentiles = c( 0.5, 1, 2, 5, 95 ), type = "conventional",
-                           typequantiles = c( "quantile", "(i-1)/(n-1)", "i/(n+1)", "i/n" ) ) {
+                           typequantiles = c( "quantile", "(i-1)/(n-1)", "i/(n+1)", "i/n" ),
+                           smooth = TRUE, smoothFunction = tdrankglm ) {
 # gets percentiles for TD rank curve. TDs should come from control subjects from a
 # set of visual fields it fits lines to characterize age effect on the visual-field
 # sensitivities. For this function all visual fields should correspond to the
@@ -17,7 +18,7 @@ tdrankadjperc <- function( td, percentiles = c( 0.5, 1, 2, 5, 95 ), type = "conv
   if( type != "conventional" & type != "ghrank" ) stop( "wrong type of global sensitivity estimation" )
 
 # get settings for the pattern of test locations
-  locini   <- vfsettings$locini
+  locini   <- visualFields::vfsettings$locini
   texteval <- paste( "vfsettings$", td$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 
@@ -55,7 +56,7 @@ tdrankadjperc <- function( td, percentiles = c( 0.5, 1, 2, 5, 95 ), type = "conv
   tdr <- tdrank( td )
 
 # get the mean normal TD-rank curve
-  tdrnv  <- tdranknv( td )$mtdr
+  tdrnv  <- tdranknv( td, smooth = smooth, smoothFunction = smoothFunction )$mtdr
   tdrnv2 <- td[1,]
   tdrnv2[,locini:ncol( tdr )] <- tdrnv
 # adjusted curves using GH or global-sensitivity estimates

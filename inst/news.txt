@@ -170,3 +170,14 @@ fixed vfdemographics follow up time
 
 v0.4 22/02/2014
 inclusion of the novel GHr estimator for general height
+
+v0.4.1 07/09/2014
+fixed small bug in loadvfxml, mapped values for probability categories for MD and PSD
+fixed small bug in tdrankadjperc
+fixed agecalc so that we can ages from a vector of dates and of dobs
+
+v0.4.2 21/01/2014
+fixed small bug in loadvfxml: problem with dates
+fixed small bug in vflayout: correct format for duration and pause
+added ÒvisualFields::Ó to global variables and environment within visualFields
+changed fonts to make them compatible with both Windows and Mac

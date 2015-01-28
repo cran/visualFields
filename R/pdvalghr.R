@@ -6,8 +6,8 @@ pdvalghr <- function( td ) {
     texteval <- paste( "vfsettings$", pd$tpattern[i], "$locnum", sep = "" )
     locnum <- eval( parse( text = texteval ) )
 # get PD values from obtained gh
-    pd[i,vfsettings$locini:vfsettings$locini:( vfsettings$locini - 1 + locnum )] <-
-      pd[i,vfsettings$locini:( vfsettings$locini - 1 + locnum )] + ghranktd( td[i,] )$gh
+    pd[i,visualFields::vfsettings$locini:visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] <-
+      pd[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] + ghranktd( td[i,] )$gh
   }
 
   return( pd )

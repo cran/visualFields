@@ -1,8 +1,8 @@
 vflayout <- function( vf, pwidth = 8.27,
                       pheight = 11.69, margin = 0.25,
                       filename = NULL,
-                      ffamily = "Helvetica", sizetxt = 12,
-                      sizetxtSmall = 8, ffmailyvf = "Times",
+                      ffamily = "serif", sizetxt = 12,
+                      sizetxtSmall = 8, ffamilyvf = "serif",
                       pointsize = 5,
                       outerSymbol = "circle", outerInch = 0.13,
                       innerSymbol = "circle", innerInch = outerInch / 1.9,
@@ -25,7 +25,7 @@ vflayout <- function( vf, pwidth = 8.27,
       }
     } else{
       options( device = "windows" )
-      dev.new( width = pwidth, height = pheight, dpi = 85 )
+      dev.new( width = pwidth, height = pheight, rescale = "fixed" )
     }
     options( device = device )
   } else {
@@ -61,7 +61,7 @@ vflayout <- function( vf, pwidth = 8.27,
 # total-deviation plot
   opar <- par( no.readonly = TRUE )
   par( fig = c( 0.3869, 0.9915, 0.5483, 0.9760 ) )
-  vfplot( vf, plotType = "td", txtfont = ffmailyvf, pointsize = pointsize,
+  vfplot( vf, plotType = "td", txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax,
           outerSymbol = outerSymbol, innerSymbol = innerSymbol,
           outerInch = outerInch, innerInch = innerInch,
@@ -69,7 +69,7 @@ vflayout <- function( vf, pwidth = 8.27,
 # sensitivity plot
   par( new = TRUE )
   par( fig = c( 0.0109, 0.6155, 0.2746, 0.7023 ) )
-  vfplot( vf, plotType = "vf", txtfont = ffmailyvf, pointsize = pointsize,
+  vfplot( vf, plotType = "vf", txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax,
           outerSymbol = outerSymbol, innerSymbol = innerSymbol,
           outerInch = outerInch, innerInch = innerInch,
@@ -77,7 +77,7 @@ vflayout <- function( vf, pwidth = 8.27,
 # pattern-deviation plot
   par( new = TRUE )
   par( fig = c( 0.3869, 0.9915, 0.0060, 0.4337 ) )
-  vfplot( vf, plotType = "pd", txtfont = ffmailyvf, pointsize = pointsize,
+  vfplot( vf, plotType = "pd", txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax,
           outerSymbol = outerSymbol, innerSymbol = innerSymbol,
           outerInch = outerInch, innerInch = innerInch,
@@ -87,7 +87,7 @@ vflayout <- function( vf, pwidth = 8.27,
   par( fig = c( 0.769, 0.981, 0.42, 0.57 ) )
   par( mar = c( 0, 0, 0.5, 0.5 ) )
   stimLoc( perimetry = vf$tperimetry, pattern = vf$tpattern, eye = vf$seye,
-          txtfont = ffmailyvf, pointsize = pointsize,
+          txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax )
 # Bebie difference curve
   par( new = TRUE )
@@ -97,7 +97,7 @@ vflayout <- function( vf, pwidth = 8.27,
 # color-code map
   par( new = TRUE )
   par( fig = c( 0.03, 0.3869, 0.015, 0.060 ) )
-  colormapgraph( ncol = 6, txtfont = ffmailyvf, pointsize = pointsize, outerSymbol = outerSymbol, innerSymbol = innerSymbol,
+  colormapgraph( ncol = 6, txtfont = ffamilyvf, pointsize = pointsize, outerSymbol = outerSymbol, innerSymbol = innerSymbol,
                  outerInch = outerInch, innerInch = innerInch )
   par( opar )
 
@@ -201,7 +201,7 @@ vflayout <- function( vf, pwidth = 8.27,
   ######################################################
   seekViewport( "infobox3" )
   
-  text <- paste( "norm vals: ", vfenv$nv$nvname, sep = "" )
+  text <- paste( "norm vals: ", visualFields::vfenv$nv$nvname, sep = "" )
   text <- paste( text, substr( packageDescription( "visualFields" )$Date, 1, 4 ), sep = "\n" )
   text <- paste( text, "visualFields", packageDescription( "visualFields" )$Version, sep = " " )
   grid.text( text, x = 1.00, y = 0.00, just = c( "right", "bottom" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxtSmall ) )
@@ -215,12 +215,12 @@ vflayout <- function( vf, pwidth = 8.27,
   if( substr( timetxt, 1, 1 ) == "0" ) substr( timetxt, 1, 1 ) <- ""
   text <- paste( "Date:", format( vf$tdate, "%m/%d/%Y" ), "at", timetxt, sep = " " )
 # duration and pause of test
-  timetxt         <- substr( vf$sduration, 3, nchar( vf$sduration ) )
+  timetxt         <- substr( vf$sduration, 4, nchar( vf$sduration ) )
   if( timetxt != "59:59" ) {
     if( substr( timetxt, 1, 1 ) == "0" ) substr( timetxt, 1, 1 ) <- ""
     text <- paste( text, paste( "Duration: ", timetxt, sep = " " ), sep = "\n" )
   }
-  timetxt         <- substr( vf$spause, 3, nchar( vf$sduration ) )
+  timetxt         <- substr( vf$spause, 4, nchar( vf$sduration ) )
   if( timetxt != "59:59" ) {
     if( substr( timetxt, 1, 1 ) == "0" ) substr( timetxt, 1, 1 ) <- ""
     text <- paste( text, paste( ", pause: ", timetxt, sep = "" ), sep = "" )

@@ -1,5 +1,5 @@
 vfplot <- function( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
-                    txtfont = "Helvetica", pointsize = 7, width = 6,
+                    txtfont = "serif", pointsize = 7, width = 6,
                     xminmax = 29, yminmax = 29,
                     outerSymbol = "circles", innerSymbol = "circles",
                     outerSize = 1, innerSize = 1,
@@ -97,20 +97,20 @@ vfplot <- function( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
 # getRGB will return a table with the red, green and blue intensity values 
 # corresponding to pattern deviation at each location
   if( plotType == "vf" ) {
-    plotColor  <- vfgrayscale( dev[,vfsettings$locini:( vfsettings$locini + loc_num - 1 )], age = vf$sage, pattern = vf$tpattern, algorithm = vf$talgorithm )
-    cloneDev   <- as.character( round( dev[,vfsettings$locini:( vfsettings$locini + loc_num - 1 )] ) )
-    cloneDev[which( dev[,vfsettings$locini:( vfsettings$locini + loc_num - 1 )] < 0 )] = "<0"
+    plotColor  <- vfgrayscale( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )], age = vf$sage, pattern = vf$tpattern, algorithm = vf$talgorithm )
+    cloneDev   <- as.character( round( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] ) )
+    cloneDev[which( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] < 0 )] = "<0"
   }  else {
-    plotColor  <- vfcolormap( as.numeric( devP[,vfsettings$locini:( vfsettings$locini + loc_num - 1 )] ) )
+    plotColor  <- vfcolormap( as.numeric( devP[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] ) )
 # exclude blind spot locations
-    if( all( !is.na( bspos ) ) ) dev <- dev[,-( vfsettings$locini + bspos - 1 )]
+    if( all( !is.na( bspos ) ) ) dev <- dev[,-( visualFields::vfsettings$locini + bspos - 1 )]
     if( notSeenAsBlack ) {
-      idxblack <- which( vf[vfsettings$locini:( vfsettings$locini + loc_num - 1 )] <= 0)
+      idxblack <- which( vf[visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] <= 0)
       if( length( idxblack ) > 0 ) plotColor[idxblack,] <- 0
     }
     lenbs <- 0
     if( all( !is.na( bspos ) ) ) lenbs <- length( bspos )
-    cloneDev <- as.character( round( dev[,vfsettings$locini:( vfsettings$locini + loc_num - lenbs - 1 )] ) )
+    cloneDev <- as.character( round( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - lenbs - 1 )] ) )
     if( all( !is.na( bspos ) ) ) patternMap <- patternMap[-bspos,]
     if( all( !is.na( bspos ) ) ) plotColor  <- plotColor[-bspos,]
   }

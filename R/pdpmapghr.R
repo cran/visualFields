@@ -18,22 +18,22 @@ pdpmapghr <- function( pd ) {
     texteval <- paste( "vfenv$nv$", pdp$tpattern[i], "_", pdp$talgorithm[i], "$PDGHRpercloc", sep = "" )
     pdco <- eval( parse( text = texteval ) )
 # init PD probability maps
-    pdp[i,vfsettings$locini:( vfsettings$locini - 1 + locnum )] <- NA
+    pdp[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] <- NA
 # lets start comparing values
-    pd_iter <- as.numeric( pd[i,vfsettings$locini:( vfsettings$locini - 1 + locnum )] )
-    idx <- which( pd_iter <= pdco[,1] ) + vfsettings$locini - 1
+    pd_iter <- as.numeric( pd[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
+    idx <- which( pd_iter <= pdco[,1] ) + visualFields::vfsettings$locini - 1
     if( length( idx ) > 0 ) {
-      pdp[i,idx] <- vfenv$nv$pmapsettings$cutoffs[1]
+      pdp[i,idx] <- visualFields::vfenv$nv$pmapsettings$cutoffs[1]
     }
-    for( j in 2:( length( vfenv$nv$pmapsettings$cutoffs ) - 1 ) ) {
-      idx <- which( pdco[,j-1] < pd_iter & pd_iter <= pdco[,j] ) + vfsettings$locini - 1
+    for( j in 2:( length( visualFields::vfenv$nv$pmapsettings$cutoffs ) - 1 ) ) {
+      idx <- which( pdco[,j-1] < pd_iter & pd_iter <= pdco[,j] ) + visualFields::vfsettings$locini - 1
       if( length( idx ) > 0 ) {
-        pdp[i,idx] <- vfenv$nv$pmapsettings$cutoffs[j]
+        pdp[i,idx] <- visualFields::vfenv$nv$pmapsettings$cutoffs[j]
       }
     }
-    idx <- which( pd_iter > pdco[,j] ) + vfsettings$locini - 1
+    idx <- which( pd_iter > pdco[,j] ) + visualFields::vfsettings$locini - 1
     if( length( idx ) > 0 ) {
-      pdp[i,idx] <- vfenv$nv$pmapsettings$cutoffs[length( vfenv$nv$pmapsettings$cutoffs )]
+      pdp[i,idx] <- visualFields::vfenv$nv$pmapsettings$cutoffs[length( visualFields::vfenv$nv$pmapsettings$cutoffs )]
     }
   }
 

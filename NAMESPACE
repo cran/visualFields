@@ -1,7 +1,8 @@
-import(Hmisc)
-import(flip)
-import(gridBase)
-import(matrixStats)
+import(	Hmisc,
+       	flip,
+	gridBase,
+	matrixStats,
+	grid )
 
 export( ageLinearModel,
         filterReliability,

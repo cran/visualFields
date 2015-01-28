@@ -5,10 +5,10 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
     stop("Error! vf cannot have more than 1 rows")
   }
   
-  ffamily        <- "Helvetica"
+  ffamily        <- "serif"
   sizetxt        <- 12
   sizetxtSmall   <- 8
-  ffmailyvf      <- "Times"
+  ffamilyvf      <- "serif"
   pointsize      <- 7
   outerSymbol    <- "circle"
   outerInch      <- 0.13
@@ -31,7 +31,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
       }
     } else{
       options( device = "windows" )
-      dev.new( width = pwidth, height = pheight, dpi = 85 )
+      dev.new( width = pwidth, height = pheight, rescale = "fixed" )
     }
     options( device = device )
   } else {
@@ -67,7 +67,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
 # total-deviation plot
   opar <- par( no.readonly = TRUE )
   par( fig = c( 0.3869, 0.9915, 0.5483, 0.9760 ) )
-  vfplot( vf, plotType = "td", txtfont = ffmailyvf, pointsize = pointsize,
+  vfplot( vf, plotType = "td", txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax,
           outerSymbol = outerSymbol, innerSymbol = innerSymbol,
           outerInch = outerInch, innerInch = innerInch,
@@ -75,7 +75,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
 # sensitivity plot
   par( new = TRUE )
   par( fig = c( 0.0109, 0.6155, 0.2746, 0.7023 ) )
-  vfplot( vf, plotType = "vf", txtfont = ffmailyvf, pointsize = pointsize,
+  vfplot( vf, plotType = "vf", txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax,
           outerSymbol = outerSymbol, innerSymbol = innerSymbol,
           outerInch = outerInch, innerInch = innerInch,
@@ -83,7 +83,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
 # pattern-deviation plot
   par( new = TRUE )
   par( fig = c( 0.3869, 0.9915, 0.0060, 0.4337 ) )
-  vfplot( vf, plotType = "pdghr", txtfont = ffmailyvf, pointsize = pointsize,
+  vfplot( vf, plotType = "pdghr", txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax,
           outerSymbol = outerSymbol, innerSymbol = innerSymbol,
           outerInch = outerInch, innerInch = innerInch,
@@ -93,7 +93,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
   par( fig = c( 0.769, 0.981, 0.42, 0.57 ) )
   par( mar = c( 0, 0, 0.5, 0.5 ) )
   stimLoc( perimetry = vf$tperimetry, pattern = vf$tpattern, eye = vf$seye,
-          txtfont = ffmailyvf, pointsize = pointsize,
+          txtfont = ffamilyvf, pointsize = pointsize,
           xminmax = xminmax, yminmax = yminmax )
 # Bebie difference curve
   par( new = TRUE )
@@ -104,7 +104,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
 # color-code map
   par( new = TRUE )
   par( fig = c( 0.03, 0.3869, 0.015, 0.060 ) )
-  colormapgraph( ncol = 6, txtfont = ffmailyvf, pointsize = pointsize, outerSymbol = outerSymbol, innerSymbol = innerSymbol,
+  colormapgraph( ncol = 6, txtfont = ffamilyvf, pointsize = pointsize, outerSymbol = outerSymbol, innerSymbol = innerSymbol,
                  outerInch = outerInch, innerInch = innerInch )
   par( opar )
 
@@ -208,7 +208,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25,
   ######################################################
   seekViewport( "infobox3" )
   
-  text <- paste( "norm vals: ", vfenv$nv$nvname, sep = "" )
+  text <- paste( "norm vals: ", visualFields::vfenv$nv$nvname, sep = "" )
   text <- paste( text, substr( packageDescription( "visualFields" )$Date, 1, 4 ), sep = "\n" )
   text <- paste( text, "visualFields", packageDescription( "visualFields" )$Version, sep = " " )
   grid.text( text, x = 1.00, y = 0.00, just = c( "right", "bottom" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxtSmall ) )
