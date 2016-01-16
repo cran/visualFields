@@ -36,4 +36,4 @@ From here age linear models, percentile values, etc are defined for combination 
 
 \keyword{datasets}
 
-\author{Ivan Marin-Franch <imarinfr@indiana.edu>, William H Swanson}
+\author{Ivan Marin-Franch, William H Swanson}

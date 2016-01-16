@@ -51,7 +51,28 @@ vflayout <- function( vf, pwidth = 8.27,
   } else if( vf$tpattern == "p10d2" ) {
     xminmax     <- 10
     yminmax     <- 10
+  } else if( vf$tpattern == "p30d1" ) {
+    xminmax     <- 10
+    yminmax     <- 10
+  } else if( vf$tpattern == "p24d2v" ) {
+    xminmax     <- 30
+    yminmax     <- 30
+  } else if( vf$tpattern == "p30d2v" ) {
+    xminmax     <- 30
+    yminmax     <- 30
+  } else if( vf$tpattern == "p10d2v" ) {
+    xminmax     <- 10
+    yminmax     <- 10
+  } else if( vf$tpattern == "p30d1v" ) {
+    xminmax     <- 30
+    yminmax     <- 30
   } else if( vf$tpattern == "sgrnfl" ) {
+    xminmax     <- 30
+    yminmax     <- 30
+  } else if( vf$tpattern == "p24d2csp" ) {
+    xminmax     <- 30
+    yminmax     <- 30
+  } else if( vf$tpattern == "p24d2SB" ) {
     xminmax     <- 30
     yminmax     <- 30
   } else {
@@ -175,11 +196,26 @@ vflayout <- function( vf, pwidth = 8.27,
     textpattern <- "Central 30-2"
   } else if( vf$tpattern == "p10d2" ) {
     textpattern <- "Central 10-2"
+  } else if( vf$tpattern == "p24d2v" ) {
+    textpattern <- "Central 24-2, size V"
+  } else if( vf$tpattern == "p30d2v" ) {
+    textpattern <- "Central 30-2, size V"
+  } else if( vf$tpattern == "p10d2v" ) {
+    textpattern <- "Central 10-2, size V"
+  } else if( vf$tpattern == "p30d1" ) {
+    textpattern <- "Central 30-1"
+  } else if( vf$tpattern == "p30d1v" ) {
+    textpattern <- "Central 30-1, size V"
   } else if( vf$tpattern == "sgrnfl" ) {
     textpattern <- "CSP-SG-RNFL-57"
+  } else if( vf$tpattern == "p24d2csp" ) {
+    textpattern <- "Central 24-2"  
+  } else if( vf$tpattern == "p24d2SB" ) {
+    textpattern <- "Central 24-2"
   } else {
     textpattern <- "Unknown"
   }
+  
   # algorithm
   if( vf$talgorithm == "sitas" ) {
     textalgorithm <- "SITA standard"

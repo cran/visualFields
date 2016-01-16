@@ -16,11 +16,6 @@ tdranknv <- function( td, smooth = TRUE, smoothFunction = tdrankglm ) {
 
 # get settings for the pattern of test locations
   locini   <- visualFields::vfsettings$locini
-  texteval <- paste( "vfsettings$", td$tpattern[1], sep = "" )
-  settings <- eval( parse( text = texteval ) )
-
-# position (column number) of the blind spot in the VF object
-  bspos <- settings$bs + locini - 1
 
 # get weights based on number of visits per subject
   idu <- NULL

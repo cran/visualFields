@@ -23,4 +23,4 @@
 #tdrankadjperc( td )
 }
 
-\author{Ivan Marin-Franch <imarinfr@indiana.edu>}
+\author{Ivan Marin-Franch}

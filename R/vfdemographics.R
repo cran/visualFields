@@ -75,7 +75,6 @@ vfdemographics <- function( vf ) {
   demog$stats <- as.data.frame( demog$stats )
   nc <- ncol( demog$stats )
 # stats of locations
-  stats_aux <- NULL
   for( i in locini:( locini - 1 + settings$locnum ) ) {
     nc <- nc + 1
     demog$stats[1,nc] <- min( vf[,i] )

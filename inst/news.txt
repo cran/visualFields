@@ -176,8 +176,13 @@ fixed small bug in loadvfxml, mapped values for probability categories for MD an
 fixed small bug in tdrankadjperc
 fixed agecalc so that we can ages from a vector of dates and of dobs
 
-v0.4.2 21/01/2014
+v0.4.2 21/01/2015
 fixed small bug in loadvfxml: problem with dates
 fixed small bug in vflayout: correct format for duration and pause
 added ÒvisualFields::Ó to global variables and environment within visualFields
 changed fonts to make them compatible with both Windows and Mac
+
+v0.4.3 15/01/2016
+changes in documentation
+inclusion of 30-1 map for size III and of 10-2, 24-2, 30-2, and 30-1 maps for size V and VI
+other location maps

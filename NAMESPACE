@@ -1,8 +1,10 @@
-import(	Hmisc,
-       	flip,
+import(	stats,
+	utils,
 	gridBase,
+	grid,
+	flip,
 	matrixStats,
-	grid )
+	Hmisc )
 
 export( ageLinearModel,
         filterReliability,
@@ -63,3 +65,6 @@ export( ageLinearModel,
 	sdnvghr,
 	vflayoutghr,
 	tdrankadjperc )
+
+ importFrom( "grDevices", "col2rgb", "dev.new", "dev.off", "pdf", "rgb" )
+ importFrom( "graphics", "axis", "box", "grid", "lines", "par", "points", "segments", "text", "title" )

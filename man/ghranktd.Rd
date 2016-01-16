@@ -32,4 +32,4 @@ ghranktd( td, minPts = 2, strategy = "isospaced", withinNormal = 95, pCentral = 
 #######################ghrank <- ghranktd( td )
 }
 
-\author{Ivan Marin-Franch <imarinfr@indiana.edu>}
+\author{Ivan Marin-Franch}

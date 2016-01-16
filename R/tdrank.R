@@ -3,9 +3,6 @@ tdrank <- function( td ) {
 
   tdr <- td
   for( i in 1:nrow( td ) ) {
-# get blind-spot position
-    texteval <- paste( "vfsettings$", td$tpattern[i], "$bs", sep = "" )
-    bspos <- eval( parse( text = texteval ) ) + visualFields::vfsettings$locini - 1
     tdr[i,visualFields::vfsettings$locini:ncol( td )] <- td[i,( order( td[i,visualFields::vfsettings$locini:ncol( td )], decreasing = TRUE ) + visualFields::vfsettings$locini - 1 )]
   }
 # Remove all columns that are NAs because they correspond to locations of the blind spot.

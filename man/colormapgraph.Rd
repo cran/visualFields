@@ -32,4 +32,4 @@ it generates a graph with the color legend for p-values in td and pd probability
 colormapgraph()
 }
 
-\author{Ivan Marin-Franch <imarinfr@indiana.edu>}
+\author{Ivan Marin-Franch}
