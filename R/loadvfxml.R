@@ -21,7 +21,7 @@ loadvfxml <- function( filename, patternMap, typeData = "vf", typeSubject = "pwg
   xmlobject$sfl        <- NA
   xmlobject$sduration  <- NA
   xmlobject$spause     <- NA
-  xmlobject <- as.data.frame( xmlobject )
+  xmlobject            <- as.data.frame( xmlobject )
   xmlobject$id         <- xmlitem( "PATIENT_ID", xmllines )
   instrument           <- xmlitem( "INSTRUMENT_NAME", xmllines )
   xmlobject$tperimetry <- switch( instrument,
@@ -33,6 +33,12 @@ loadvfxml <- function( filename, patternMap, typeData = "vf", typeSubject = "pwg
   if( length( grep( "24-2", dname ) ) > 0 ) xmlobject$tpattern <- "p24d2"
   if( length( grep( "30-2", dname ) ) > 0 ) xmlobject$tpattern <- "p30d2"
   if( length( grep( "10-2", dname ) ) > 0 ) xmlobject$tpattern <- "p10d2"
+  size                 <- xmlitem( "STIMULUS_SIZE", xmllines )
+  if( size == 1 ) xmlobject$tpattern <- paste0( xmlobject$tpattern, "i"  )
+  if( size == 2 ) xmlobject$tpattern <- paste0( xmlobject$tpattern, "ii" )
+  if( size == 4 ) xmlobject$tpattern <- paste0( xmlobject$tpattern, "iv" )
+  if( size == 5 ) xmlobject$tpattern <- paste0( xmlobject$tpattern, "v"  )
+  if( size == 6 ) xmlobject$tpattern <- paste0( xmlobject$tpattern, "vi" )
   xmlobject$tdate      <- xmlitem( "VISIT_DATE", xmllines )
   xmlobject$ttime      <- xmlitem( "EXAM_TIME", xmllines )
   xmlobject$stype      <- typeSubject

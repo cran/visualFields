@@ -1,71 +1,40 @@
-vfplot <- function( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
-                    txtfont = "serif", pointsize = 7, width = 6,
-                    xminmax = 29, yminmax = 29,
-                    outerSymbol = "circles", innerSymbol = "circles",
-                    outerSize = 1, innerSize = 1,
-                    outerInch = 0.14, innerInch = 0.08,
-                    lengthLines = 4.25, thicknessLines = 2 ) {
+vfplot <- function( vf, plotType,
+                    xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
+                    notSeenAsBlack = TRUE, newWindow = FALSE,
+                    txtfont = "sans", pointsize = 10, width = 6,
+                    showaxis = FALSE, colaxis = "white" ) {
 
-# check that vf has only 1 entry
+  # check that vf has only 1 entry
   if( nrow( vf ) > 1 ) {
     stop("Error! vf cannot have more than 1 rows")
   }
 
-# Check that symbol input arguments are consistent
-# sizes must be arrays, not matrices
-  if( is.matrix( outerSize ) ) {
-    stop( "Error! outerSize cannot be a matrix" )
-  }
-  if( is.matrix( innerSize ) ) {
-    stop( "Error! innerSize cannot be a matrix" )
-  }
-# circles and squares are specified by one number
-  if( outerSymbol == c( "circles" ) || outerSymbol == c( "squares" ) ) {
-    if( length( outerSize ) != 1 ) {
-      stop( "Error! length of outerSize should be 1 for circles or squares" )
-    }
-  }
-  if( innerSymbol == c( "circles" ) || innerSymbol == c( "squares" ) ) {
-    if( length( innerSize ) != 1 ) {
-      stop( "Error! length of outerSize should be 1 for circles or squares" )
-    }
-  }
-# rectangles are specified by two numbers
-  if( outerSymbol == c( "rectangles" ) ) {
-    if( length( outerSize ) != 2 ) {
-      stop( "Error! length of outerSize should be 2 for rectangles" )
-    }
-  }
-# rectangles are specified by two numbers
-  if( innerSymbol == c( "rectangles" ) ) {
-    if( length( innerSize ) != 2 ) {
-      stop( "Error! length of outerSize should be 2 for rectangles" )
-    }
-  }
-# stars are specifed by more than two numbers
-  if( outerSymbol == c( "stars" ) ) {
-    if( length( outerSize ) < 3 ) {
-      stop( "Error! outerSize should be greater than or equal to 3 for stars" )
-    }
-  }
-  if( innerSymbol == c( "stars" ) ) {
-    if( length( innerSize ) < 3 ) {
-      stop( "Error! outerSize should be greater than or equal to 3 for stars" )
-    }
-  }
-
-# construct the pattern string based on the pattern type
+  # special locations in the visual field: BS locations
+  bsxy   <- NULL
+  bsxy$x <- c( 15, 15)
+  bsxy$y <- c( 3, -3 )
+  bsxy   <- as.data.frame( bsxy )
+  
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+  
+  # construct the pattern string based on the pattern type
   evaltxt <- paste( "vfsettings$", vf$tpattern, "$locnum", sep = "" )
   loc_num <- eval( parse( text = evaltxt ) )
 
-# construct patternmap
-  evaltxt <- paste( vf$tperimetry, "locmap$", vf$tpattern, sep = "" )
+  # construct patternmap
+  evaltxt    <- paste( vf$tperimetry, "locmap$", vf$tpattern, sep = "" )
   patternMap <- eval( parse( text=evaltxt ) )
-# get bs
-  if( plotType != "vf" ) {
-    evaltxt <- paste( "vfsettings$", vf$tpattern, "$bs", sep = "" )
-    bspos <- eval( parse( text = evaltxt ) )
-  }
+  patternMap <- patternMap[,c( "xod", "yod" )]
+
+  # if not imposed, calculate limits of plot
+  # expand by 5% each axis
+  xrange <- max( patternMap$xod ) - min( patternMap$xod )
+  yrange <- max( patternMap$yod ) - min( patternMap$yod )
+  if( is.null( xmin ) ) xmin <- min( patternMap$xod ) - 0.025 * xrange
+  if( is.null( xmax ) ) xmax <- max( patternMap$xod ) + 0.025 * xrange
+  if( is.null( ymin ) ) ymin <- min( patternMap$yod ) - 0.025 * yrange
+  if( is.null( ymax ) ) ymax <- max( patternMap$yod ) + 0.025 * yrange
 
 # read in the plotType and decide what to do
   if( plotType == "vf" ) {
@@ -75,52 +44,78 @@ vfplot <- function( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
 # if plot type id 'td' then calculate total deviation and total deviation probability
   if( plotType == "td" ) {
     dev  <- tdval( vf )
-    devP <- tdpmap( dev )
+    devp <- tdpmap( dev )
   }  
     
 # if plot type id 'pd' then first calculate total deviation
 # use the toal deviation to calculate probabilty deviation 
   if( plotType == "pd" ) {
-    dev  <- tdval( vf )
-    dev  <- pdval( dev )
-    devP <- pdpmap( dev )
+    dev  <- pdval( tdval( vf ) )
+    devp <- pdpmap( dev )
   }
 
 # if plot type id "pdghr" then first calculate total deviation
 # use the total deviation to calculate pattern deviation from global-sensitivity estimate
   if( plotType == "pdghr" ) {
-    dev  <- tdval( vf )
-    dev  <- pdvalghr( dev )
-    devP <- pdpmapghr( dev )
+    dev  <- pdvalghr( tdval( vf ) )
+    devp <- pdpmapghr( dev )
   }
 
 # getRGB will return a table with the red, green and blue intensity values 
 # corresponding to pattern deviation at each location
   if( plotType == "vf" ) {
-    plotColor  <- vfgrayscale( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )], age = vf$sage, pattern = vf$tpattern, algorithm = vf$talgorithm )
-    cloneDev   <- as.character( round( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] ) )
-    cloneDev[which( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] < 0 )] = "<0"
+    plotColor <- vfgrayscale( dev[,locini:( locini + loc_num - 1 )], age = vf$sage, pattern = vf$tpattern, algorithm = vf$talgorithm )
+    cloneDev  <- as.character( round( dev[,locini:( locini + loc_num - 1 )] ) )
+    cloneDev[which( dev[,locini:( locini + loc_num - 1 )] < 0 )] = "<0"
   }  else {
-    plotColor  <- vfcolormap( as.numeric( devP[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] ) )
-# exclude blind spot locations
-    if( all( !is.na( bspos ) ) ) dev <- dev[,-( visualFields::vfsettings$locini + bspos - 1 )]
+    plotColor <- vfcolormap( as.numeric( devp[,locini:( locini + loc_num - 1 )] ) )
+    cloneDev  <- as.numeric( dev[,locini:( locini + loc_num - 1 )] )
+    cloneDev  <- as.character( round( cloneDev ) )
     if( notSeenAsBlack ) {
-      idxblack <- which( vf[visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - 1 )] <= 0)
+      idxblack <- which( vf[locini:( locini + loc_num - 1 )] <= 0)
       if( length( idxblack ) > 0 ) plotColor[idxblack,] <- 0
     }
-    lenbs <- 0
-    if( all( !is.na( bspos ) ) ) lenbs <- length( bspos )
-    cloneDev <- as.character( round( dev[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini + loc_num - lenbs - 1 )] ) )
-    if( all( !is.na( bspos ) ) ) patternMap <- patternMap[-bspos,]
-    if( all( !is.na( bspos ) ) ) plotColor  <- plotColor[-bspos,]
   }
 
   # if NA then plot all in black
   plotColor[is.na( plotColor )] <- 0
 
+  # add void points if not in the test of locations
+  for( i in 1:nrow( bsxy ) ) {
+    if( xmin < bsxy$x[i] & xmax > bsxy$x[i] & ymin < bsxy$y[i] & ymax > bsxy$y[i] ) {
+      idx <- which( patternMap$xod == bsxy$x[i] & patternMap$yod == bsxy$y[i] )
+      if( length( idx ) > 0 ) {
+        if( plotType == "vf" ) {
+          plotColor[idx,] <- c( 0, 0, 0 )
+        }  else {
+          plotColor[idx,] <- c( 0.5, 0.5, 0.5 )
+        }
+      } else {
+        patternMap <- rbind( patternMap, c( bsxy$x[i], bsxy$y[i] ) )
+        cloneDev   <- c( cloneDev,  NA )
+        if( plotType == "vf" ) {
+          plotColor <- rbind( plotColor, c( 0, 0, 0 ) )
+        }  else {
+          plotColor <- rbind( plotColor, c( 0.5, 0.5, 0.5 ) )
+        }
+      }
+    }
+  }
+
+  if( vf$seye == "OS" ) {
+    xmin2 <- xmin
+    xmin  <- -xmax
+    xmax  <- -xmin2
+    patternMap$xod <- -patternMap$xod
+  }
+  # get the Voronoi tesselation tiles tiles
+  vftess  <- vftessellation( patternMap, dist = 3 )
+  vftiles <- tile.list( vftess[[1]] )
+  vfhull  <- vftess[[2]]
+
 # create a new window and plot data in it
 # window rescale is set to fixed to ensure re-sizing window doesn't re-size the plot
-  height <- width * yminmax / xminmax
+  height <- width * ( ymax - ymin ) / ( xmax - xmin )
   if( newWindow ) {
     device <- options( "device" )
     if( .Platform$OS.type == "unix" ) {
@@ -137,13 +132,9 @@ vfplot <- function( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
     }
     options( device = device )
   }
-  vfplotloc( cloneDev, eye = vf$seye, patternMap = patternMap, outerColor = plotColor,
-             bs = c( vf$sbsx, vf$sbsy ),
+  vfplotloc( cloneDev, patternMap = patternMap,
+             vftiles = vftiles, vfhull = vfhull, loccol = plotColor,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
              txtfont = txtfont, pointsize = pointsize,
-             xminmax = xminmax, yminmax = yminmax,
-             outerSymbol = outerSymbol, innerSymbol = innerSymbol,
-             outerSize = outerSize, innerSize = innerSize,
-             outerInch = outerInch, innerInch = innerInch,
-             lengthLines = lengthLines, thicknessLines = thicknessLines )
-
+             showaxis = showaxis, colaxis = colaxis )
 }

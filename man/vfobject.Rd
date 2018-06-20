@@ -5,7 +5,7 @@
 \details{The fixed columns of the visualField object with information about subject and test are:
   \tabular{ll}{
     \bold{id}         \tab subject identification number\cr
-    \bold{tperimetry} \tab test perimetry. The type of perimetry analysys performed. Possible values include\cr
+    \bold{tperimetry} \tab test perimetry. The type of perimetry analysis performed. Possible values include\cr
                       \tab \code{"sap"} and \code{"fdp"}. The value of this column, \code{tperimetry}, is used\cr
                       \tab in conjunction with the value in \code{talgorithm}, and \code{tpattern} to find the\cr
                       \tab corresponding normative values (see help on \code{nv}) to use for data analysis (e.g.\cr

@@ -1,10 +1,10 @@
-\name{vflayout_legoplot}
-\alias{vflayout_legoplot}
+\name{vflayout2_legoplot}
+\alias{vflayout2_legoplot}
 \title{legoplot visualization for change in sensitivities over time of visual fields}
 \description{
 displays a legoplot visualization for change in sensitivities over time of visual fields
 }
-\usage{vflayout_legoplot( vf, grp = 3, pwidth = 8.27, pheight = 11.69,
+\usage{vflayout2_legoplot( vf, grp = 3, pwidth = 8.27, pheight = 11.69,
                                margin = 0.25, filename = NULL,
                                ffamily = "serif", sizetxt = 12,
                                sizetxtSmall = 8,
@@ -43,10 +43,12 @@ displays a legoplot visualization for change in sensitivities over time of visua
   \item{innerInchlego}{Inches of inner lego symbol. Default is \code{0.16}}
 }
 
-\seealso{\code{\link{vflayout}}, \code{\link{vflayout_poplr}}}
+\seealso{\code{\link{vflayout2}}, \code{\link{vflayout2_poplr}}}
 
 \examples{
-#vflayout_legoplot( vf91016right )
+  \donttest{
+    vflayout2_legoplot( vf91016right )
+  }
 }
 
 \author{Ivan Marin-Franch}

@@ -1,6 +1,6 @@
 progols <- function( tdate, index, projyears = 5,
                      xlab = "years from first visit", ylab = "md",
-                     txtfont = "mono", pointsize = 12, cex = 1 ) {
+                     txtfont = "sans", pointsize = 10, cex = 1 ) {
 
   lt      <- as.POSIXlt( tdate )
   mon     <- lt$year * 12 + lt$mon
@@ -13,7 +13,7 @@ progols <- function( tdate, index, projyears = 5,
   ylim <- c( max( index ) - 11, max( index ) + 1 )
 # get regression
   mdreg <- lm( index ~ yeardif )
-  pval  <- summary( mdreg )$coefficients[2,4]
+  pval  <- summary( mdreg )$coefficients[2,4] / 2
   pval  <- round( pval * 1000 ) / 1000
   ylab  <- paste( ylab, ", p = ", as.character( pval ), sep = "" )
   yreg  <- mdreg$coefficients[1] + mdreg$coefficients[2] * xreg

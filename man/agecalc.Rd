@@ -15,4 +15,4 @@
   agecalc( "1977-01-31", "2014-01-30" )
 }
 
-\author{Ivan Marin-Franch <imarinfr@indiana.edu>}
+\author{Ivan Marin-Franch}

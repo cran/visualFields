@@ -1,6 +1,12 @@
 pdpmap <- function( pd ) {
 # gets the probability score from the current normative value reference.
 
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+  # get normative values
+  texteval <- "vfenv$nv"
+  nv       <- eval( parse( text = texteval ) )
+
 # init
   pdp <- pd
 
@@ -18,22 +24,22 @@ pdpmap <- function( pd ) {
     texteval <- paste( "vfenv$nv$", pdp$tpattern[i], "_", pdp$talgorithm[i], "$PDpercloc", sep = "" )
     pdco <- eval( parse( text = texteval ) )
 # init PD probability maps
-    pdp[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] <- NA
+    pdp[i,locini:( locini - 1 + locnum )] <- NA
 # lets start comparing values
-    pd_iter <- as.numeric( pd[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    idx <- which( pd_iter <= pdco[,1] ) + visualFields::vfsettings$locini - 1
+    pd_iter <- as.numeric( pd[i,locini:( locini - 1 + locnum )] )
+    idx <- which( pd_iter <= pdco[,1] ) + locini - 1
     if( length( idx ) > 0 ) {
-      pdp[i,idx] <- visualFields::vfenv$nv$pmapsettings$cutoffs[1]
+      pdp[i,idx] <- nv$pmapsettings$cutoffs[1]
     }
-    for( j in 2:( length( visualFields::vfenv$nv$pmapsettings$cutoffs ) - 1 ) ) {
-      idx <- which( pdco[,j-1] < pd_iter & pd_iter <= pdco[,j] ) + visualFields::vfsettings$locini - 1
+    for( j in 2:( length( nv$pmapsettings$cutoffs ) - 1 ) ) {
+      idx <- which( pdco[,j-1] < pd_iter & pd_iter <= pdco[,j] ) + locini - 1
       if( length( idx ) > 0 ) {
-        pdp[i,idx] <- visualFields::vfenv$nv$pmapsettings$cutoffs[j]
+        pdp[i,idx] <- nv$pmapsettings$cutoffs[j]
       }
     }
-    idx <- which( pd_iter > pdco[,j] ) + visualFields::vfsettings$locini - 1
+    idx <- which( pd_iter > pdco[,j] ) + locini - 1
     if( length( idx ) > 0 ) {
-      pdp[i,idx] <- visualFields::vfenv$nv$pmapsettings$cutoffs[length( visualFields::vfenv$nv$pmapsettings$cutoffs )]
+      pdp[i,idx] <- nv$pmapsettings$cutoffs[length( nv$pmapsettings$cutoffs )]
     }
   }
 

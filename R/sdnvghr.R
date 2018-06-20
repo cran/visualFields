@@ -15,7 +15,8 @@ sdnvghr <- function( vf, smooth = TRUE, smoothFunction = quad2Dfit ) {
   }
 
   # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
   texteval <- paste( "vfsettings$", vf$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 

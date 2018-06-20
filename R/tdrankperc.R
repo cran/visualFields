@@ -14,7 +14,8 @@ tdrankperc <- function( td, percentiles = c( 0.5, 1, 2, 5, 95 ), type = c( "quan
   }
 
 # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
   texteval <- paste( "vfsettings$", td$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 

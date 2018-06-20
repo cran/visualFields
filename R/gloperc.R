@@ -15,7 +15,8 @@ gloperc <- function( vals, percentiles = c( 0.5, 1, 2, 5, 95 ),
   }
 
 # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
   texteval <- paste( "vfsettings$", vals$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 # get how many locations we need to look at

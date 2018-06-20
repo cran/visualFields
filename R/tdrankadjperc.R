@@ -18,7 +18,8 @@ tdrankadjperc <- function( td, percentiles = c( 0.5, 1, 2, 5, 95 ), type = "conv
   if( type != "conventional" & type != "ghrank" ) stop( "wrong type of global sensitivity estimation" )
 
 # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
   texteval <- paste( "vfsettings$", td$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 

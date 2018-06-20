@@ -10,6 +10,7 @@ vfgrayscale <- function( sens, age, pattern, algorithm ) {
   sens <- sens / max( vals )
   sens[which( sens < 0 )] <- 0
   sens[which( sens > 1 )] <- 1
-  return ( matrix( rep( sens, 3 ), nrow = length( sens ), ncol = 3 ) )
-
+  rgbval <- as.data.frame( matrix( rep( sens, 3 ), nrow = length( sens ), ncol = 3 ) )
+  names( rgbval ) <- c( "red", "green", "blue" )
+  return( rgbval )
 }

@@ -1,4 +1,9 @@
-vfcolormap <- function( map, mapval = visualFields::vfenv$nv$pmapsettings ) {
+vfcolormap <- function( map, mapval = NULL ) {
+
+  if( is.null( mapval ) ) {
+    texteval <- "vfenv$nv$pmapsettings"
+    mapval <- eval( parse( text = texteval ) )
+  }
 
   rgbval                      <- NULL
   rgbval$red[1:length(map)]   <- c( NA )
@@ -9,7 +14,6 @@ vfcolormap <- function( map, mapval = visualFields::vfenv$nv$pmapsettings ) {
   for( i in 1:length( mapval$cutoffs ) ) {
     idx <- which( map == mapval$cutoffs[i] )
     if( length( idx ) > 0 ) rgbval[idx,] <- mapval[i,2:ncol( mapval )]
-  }  
-
+  }
   return ( rgbval )
 }

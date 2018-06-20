@@ -1,5 +1,6 @@
-getnv <- function(  ) {
+getnv <- function() {
 
-  return( visualFields::vfenv$nv )
+  texteval <- "vfenv$nv"
+  return( eval( parse( text = texteval ) ) )
 
 }

@@ -15,7 +15,8 @@ tdranknv <- function( td, smooth = TRUE, smoothFunction = tdrankglm ) {
   }
 
 # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
 
 # get weights based on number of visits per subject
   idu <- NULL

@@ -1,4 +1,8 @@
 pdval <- function( td ) {
+
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+
   pd <- td
 
   for( i in 1:nrow( pd ) ) {
@@ -6,8 +10,7 @@ pdval <- function( td ) {
     texteval <- paste( "vfsettings$", pd$tpattern[i], "$locnum", sep = "" )
     locnum <- eval( parse( text = texteval ) )
 # get PD values from obtained gh
-    pd[i,visualFields::vfsettings$locini:visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] <-
-      pd[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] - ghpostd( td[i,] )
+    pd[i,locini:( locini - 1 + locnum )] <- pd[i,locini:( locini - 1 + locnum )] - ghpostd( td[i,] )
   }
 
   return( pd )

@@ -14,12 +14,16 @@ poplr_pstat <- function( vf, porder, type = "slr", sl_test = NULL ) {
   if( nrow( porder ) > 1000000 ) stop( "please don't! Don't use more than a million permutations!" )
   if( !( type == "slr" | type == "rank" ) ) stop( "wrong type of analysis. Chose type slr or rank only" )
   if( type != "slr" & !is.null( sl_test ) ) stop( "tests about slopes being larger than a value are only valid for slr analysis" )
+
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+
 # extract age and location values from vf and delete blind spots
-  age <- vf$sage
+  age <- as.numeric( vf$tdate - vf$tdate[1] ) / 365.25 # it should be difference in years from basline date
   evaltxt <- paste( "vfsettings$", vf$tpattern[1], "$bs", sep = "" )
   bs <- eval( parse( text = evaltxt ) )
-  vf <- vf[,visualFields::vfsettings$locini:ncol( vf )]
-  vf <- vf[,-bs]
+  vf <- vf[,locini:ncol( vf )]
+  if ( !is.na( bs[1] ) ) vf <- vf[,-bs]
   vf <- as.matrix( vf )
 # number of permutations, locations, and tests
   nperm <- nrow( porder )

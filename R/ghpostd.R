@@ -3,6 +3,10 @@ ghpostd <- function( td, correction = FALSE, rankRef = c( "default" ) ) {
   if( nrow( td ) > 1) {
     stop( "pass only one visual field here" )
   }
+
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+
 # get blind-spot position
   texteval <- paste( "vfsettings$", td$tpattern, "$bs", sep = "" )
   bspos <- eval( parse( text = texteval ) )
@@ -21,7 +25,7 @@ ghpostd <- function( td, correction = FALSE, rankRef = c( "default" ) ) {
 # get TD values in a list and remove blind spot
   tdr <- tdrank( td )
 # rankRef-th largest TD value
-  gh <- as.numeric( tdr[visualFields::vfsettings$locini + rankRef - 1] )
+  gh <- as.numeric( tdr[locini + rankRef - 1] )
   if( correction ) {
     texteval <- paste( "vfenv$nv$", td$tpattern, "_", td$talgorithm, "$nvtdrank$mtdr", sep = "" )
     tdrref  <- eval( parse( text = texteval ) )

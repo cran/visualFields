@@ -16,8 +16,10 @@ ghranktd <- function( td, minPts = 2, strategy = "isospaced", withinNormal = 95,
 # checks
   if( strategy != "parallel" & strategy != "isospaced" & strategy != "glmfit" ) stop( "wrong strategy. Choos between 'parallel' or 'isospaced' " )
   if( nrow( td ) > 1) stop( "pass only one visual field here" )
-  if( pCentral < 0.05 ) stop( "use at least half of the TD rank curve" )
+  if( pCentral < 0.5 ) stop( "use at least half of the TD rank curve" )
 
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
 # get blind-spot position
   texteval <- paste( "vfsettings$", td$tpattern, "$bs", sep = "" )
   bspos <- eval( parse( text = texteval ) )
@@ -30,8 +32,8 @@ ghranktd <- function( td, minPts = 2, strategy = "isospaced", withinNormal = 95,
 
 # get p-values, convert vf-object to arrays of values, and remove the blind spot
   tdp    <- tdpmap( td )
-  td     <- as.numeric( td[,visualFields::vfsettings$locini:(visualFields::vfsettings$locini + locnum - 1 )] )
-  tdp    <- as.numeric( tdp[,visualFields::vfsettings$locini:(visualFields::vfsettings$locini + locnum - 1 )] )
+  td     <- as.numeric( td[,locini:(locini + locnum - 1 )] )
+  tdp    <- as.numeric( tdp[,locini:(locini + locnum - 1 )] )
   td     <- td[-bspos]
   tdp    <- tdp[-bspos]
   locnum <- locnum - length( bspos )

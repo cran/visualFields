@@ -15,8 +15,9 @@ ageLinearModel <- function( vf, smooth = TRUE, smoothFunction = quad2Dfit ) {
     stop("mixing different patterns of locations")
   }
 
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
 # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
   texteval <- paste( "vfsettings$", vf$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 

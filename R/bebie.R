@@ -1,8 +1,15 @@
 bebie <- function( tdr, type = "conventional", diff = TRUE, percentiles = TRUE,
-                   correction = TRUE, txtfont = "mono", pointsize = 7, cex = 1 ) {
+                   correction = TRUE, txtfont = "serif", pointsize = 12, cex = 1 ) {
 
   
   if( type != "conventional" & type != "ghrank" ) stop( "wrong type of TD-rank curve plot" )
+
+  texteval <- "vfsettings$locini"
+  locini <- eval( parse( text = texteval ) )
+
+  # get normative values
+  texteval <- "vfenv$nv"
+  nv       <- eval( parse( text = texteval ) )
 
   xlab <- "rank"
   linewdt <- 1.5
@@ -16,7 +23,7 @@ bebie <- function( tdr, type = "conventional", diff = TRUE, percentiles = TRUE,
     if( nrow( tdr ) > 1 ) {
       stop( "Error! only one visual field to use here" )
     }
-    tdrval    <- as.numeric( tdr[,visualFields::vfsettings$locini:ncol( tdr )] )
+    tdrval    <- as.numeric( tdr[,locini:ncol( tdr )] )
     rank      <- c( 1:length( tdrval ) )
 # get reference
     evaltxt        <- paste( "vfenv$nv$", tdr$tpattern, "_", tdr$talgorithm, "$nvtdrank", sep = "" )
@@ -80,9 +87,9 @@ bebie <- function( tdr, type = "conventional", diff = TRUE, percentiles = TRUE,
 
   if( percentiles ){
     for( i in 1:( ncol( tdrperc ) - 1 ) ) {
-      lines( tdrperc[,i], col = rgb( red = visualFields::vfenv$nv$pmapsettings$red[i], green = visualFields::vfenv$nv$pmapsettings$green[i], blue = visualFields::vfenv$nv$pmapsettings$blue[i] ), lwd = linewdt )
+      lines( tdrperc[,i], col = rgb( red = nv$pmapsettings$red[i], green = nv$pmapsettings$green[i], blue = nv$pmapsettings$blue[i] ), lwd = linewdt )
     }
-    lines( tdrperc[,ncol( tdrperc )], col = rgb( red = visualFields::vfenv$nv$pmapsettings$red[nrow( visualFields::vfenv$nv$pmapsettings )], green = visualFields::vfenv$nv$pmapsettings$green[nrow( visualFields::vfenv$nv$pmapsettings )], blue = visualFields::vfenv$nv$pmapsettings$blue[nrow( visualFields::vfenv$nv$pmapsettings )] ), lwd = linewdt )
+    lines( tdrperc[,ncol( tdrperc )], col = rgb( red = nv$pmapsettings$red[nrow( nv$pmapsettings )], green = nv$pmapsettings$green[nrow( nv$pmapsettings )], blue = nv$pmapsettings$blue[nrow( nv$pmapsettings )] ), lwd = linewdt )
   }
 
   points( rank, tdrval, xlim = xlim, ylim = ylim, pch = 1, cex = cex )

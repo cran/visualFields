@@ -6,8 +6,11 @@ vfindex <- function( vf, td2pdcutoff = -20, perc = 5, vfiset = visualFields::vfi
 
   numstatindices <- 2 # change if more are to be included here
 
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+  
 # init
-  vfi    <- vf[,1:( visualFields::vfsettings$locini-1 )]
+  vfi    <- vf[,1:( locini - 1 )]
   vfiaux <- NULL
 # calculate TD and PD maps
   td <- tdval( vf )
@@ -42,13 +45,13 @@ vfindex <- function( vf, td2pdcutoff = -20, perc = 5, vfiset = visualFields::vfi
     }
 # get sensitivities, td and pd values, and td and pd probability maps for the vf
 # of this iteration
-    vf_iter  <- as.numeric(vf[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    td_iter  <- as.numeric(td[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    pd_iter  <- as.numeric(pd[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    tdp_iter <- as.numeric(tdp[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    pdp_iter <- as.numeric(pdp[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
+    vf_iter  <- as.numeric(vf[i,locini:( locini - 1 + locnum )] )
+    td_iter  <- as.numeric(td[i,locini:( locini - 1 + locnum )] )
+    pd_iter  <- as.numeric(pd[i,locini:( locini - 1 + locnum )] )
+    tdp_iter <- as.numeric(tdp[i,locini:( locini - 1 + locnum )] )
+    pdp_iter <- as.numeric(pdp[i,locini:( locini - 1 + locnum )] )
 # remove blind spot from everywhere
-    if( all( !is.na( bs ) ) ) {
+    if( all( !is.na( bs[1] ) ) ) {
       vf_iter  <- vf_iter[-bs]
       td_iter  <- td_iter[-bs]
       pd_iter  <- pd_iter[-bs]
@@ -83,7 +86,7 @@ vfindex <- function( vf, td2pdcutoff = -20, perc = 5, vfiset = visualFields::vfi
   }
 
   vfiaux <- as.data.frame( vfiaux )
-  vfi[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + numstatindices )] <- vfiaux
+  vfi[,locini:( locini - 1 + numstatindices )] <- vfiaux
 
   return( vfi )
 }

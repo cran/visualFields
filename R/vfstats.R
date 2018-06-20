@@ -3,10 +3,13 @@ vfstats <- function( vf ) {
 # as vf + msens, ssens, mtdev, stdev, mpdev, spdev for mean and standard deviations for sensitivities,
 # TD values and PD values
 
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+
   numstatindices <- 6 # change if more are to be included here
 
 # init objects
-  vfs    <- vf[,1:( visualFields::vfsettings$locini-1 )]
+  vfs    <- vf[,1:( locini-1 )]
   vfsaux <- NULL
 
 # get TD and PD values
@@ -25,11 +28,11 @@ vfstats <- function( vf ) {
     texteval <- paste( "vfenv$nv$", td$tpattern[i], "_", td$talgorithm[i], "$sds", sep = "" )
     wgt <- 1 / eval( parse( text = texteval ) )
 # senect sensitivity, TD and PD values for the visual field in this iteration
-    vf_iter <- as.numeric(vf[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    td_iter <- as.numeric(td[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
-    pd_iter <- as.numeric(pd[i,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + locnum )] )
+    vf_iter <- as.numeric(vf[i,locini:( locini - 1 + locnum )] )
+    td_iter <- as.numeric(td[i,locini:( locini - 1 + locnum )] )
+    pd_iter <- as.numeric(pd[i,locini:( locini - 1 + locnum )] )
 # remove BS from everywhere
-    if( all( !is.na( bs ) ) ) {
+    if( all( !is.na( bs[1] ) ) ) {
       wgt     <- wgt[-bs,]
       vf_iter <- vf_iter[-bs]
       td_iter <- td_iter[-bs]
@@ -47,7 +50,7 @@ vfstats <- function( vf ) {
   }
   
   vfsaux <- as.data.frame( vfsaux )
-  vfs[,visualFields::vfsettings$locini:( visualFields::vfsettings$locini - 1 + numstatindices )] <- vfsaux
+  vfs[,locini:( locini - 1 + numstatindices )] <- vfsaux
 
   return( vfs )
 

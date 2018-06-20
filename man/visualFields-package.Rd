@@ -17,4 +17,4 @@ This is a collection of tools for analyzing the field of vision. It provides a f
 This work was supported by NIH grant number \bold{R01EY007716}
 }
 
-\author{The visualFields Development Team}
+\author{Ivan Marin-Franch}

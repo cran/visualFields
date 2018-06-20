@@ -15,7 +15,8 @@ sdnv <- function( vf, smooth = TRUE, smoothFunction = quad2Dfit ) {
   }
 
   # get settings for the pattern of test locations
-  locini   <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
   texteval <- paste( "vfsettings$", vf$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
 
@@ -40,15 +41,10 @@ sdnv <- function( vf, smooth = TRUE, smoothFunction = quad2Dfit ) {
 # I don't know why R doesn't have a way to compute the variances per column (that
 # I could find) of a data frame so we have to do a very inneficient loop here
   for( i in 1:settings$locnum ) {
+    if( ( i + locini - 1 ) %in% bspos ) next
     sds$sens[i] <- sqrt( wtd.var( vf[,i + locini - 1], weights = idweight, normwt = TRUE ) )
     sds$td[i]   <- sqrt( wtd.var( td[,i + locini - 1], weights = idweight, normwt = TRUE ) )
     sds$pd[i]   <- sqrt( wtd.var( pd[,i + locini - 1], weights = idweight, normwt = TRUE ) )
-  }
-
-  if( all( !is.na( settings$bs ) ) ) {
-    sds$sens[settings$bs] <- NA
-    sds$td[settings$bs]   <- NA
-    sds$pd[settings$bs]   <- NA
   }
 
   if( smooth ) {

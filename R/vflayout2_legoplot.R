@@ -1,4 +1,4 @@
-vflayout_legoplot <- function( vf, grp = 3, pwidth = 8.27, pheight = 11.69,
+vflayout2_legoplot <- function( vf, grp = 3, pwidth = 8.27, pheight = 11.69,
                                margin = 0.25, filename = NULL,
                                ffamily = "serif", sizetxt = 12,
                                sizetxtSmall = 8,
@@ -10,11 +10,11 @@ vflayout_legoplot <- function( vf, grp = 3, pwidth = 8.27, pheight = 11.69,
                                lengthLines = 0, thicknessLines = 0,
                                outerSymbollego = "square", outerInchlego = 0.36,
                                innerSymbollego = "circle", innerInchlego = 0.16 ) {
-##############
-# input checks
-##############
-# check that all rows in vf belong to the same subject, the same test, the same perimetry
-# testing and the same algorithm, and the same eye
+  ##############
+  # input checks
+  ##############
+  # check that all rows in vf belong to the same subject, the same test, the same perimetry
+  # testing and the same algorithm, and the same eye
   if( length( unique( vf$tperimetry ) ) > 1 |
       length( unique( vf$tpattern   ) ) > 1 |
       length( unique( vf$talgorithm ) ) > 1 |
@@ -24,30 +24,37 @@ vflayout_legoplot <- function( vf, grp = 3, pwidth = 8.27, pheight = 11.69,
   }
   if( nrow( vf ) < 2 * grp ) stop( "the number of visual fields needs to be at least twice the number of visual fields to group for the display" )
 
-# get settings for the pattern of test locations
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+  # get settings for the pattern of test locations
   texteval <- paste( "vfsettings$", vf$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
-# get x and y locations
+  # get x and y locations
   texteval <- paste( vf$tperimetry[1], "locmap$",  vf$tpattern[1], sep = "" )
   locmap   <- eval( parse( text = texteval ) )
+
+  # get normative values
+  texteval <- "vfenv$nv"
+  nv       <- eval( parse( text = texteval ) )
+
 # get TD and PD values
   td  <- tdval( vf )
 # remove blind spot
-  vf     <- vf[,-( settings$bs + visualFields::vfsettings$locini - 1 )]
-  td     <- td[,-( settings$bs + visualFields::vfsettings$locini - 1 )]
+  vf     <- vf[,-( settings$bs + locini - 1 )]
+  td     <- td[,-( settings$bs + locini - 1 )]
   locmap <- locmap[-settings$bs,]
 # add color for the text of the legoplots
-txtcolorlego <- t( matrix( rep( col2rgb( txtcolorlego ) / 255, nrow( locmap ) ), 3, nrow( locmap ) ) )
-txtcolorlego <- as.data.frame( txtcolorlego )
-names( txtcolorlego ) <- c( "red", "green", "blue" )
+  txtcolorlego <- t( matrix( rep( col2rgb( txtcolorlego ) / 255, nrow( locmap ) ), 3, nrow( locmap ) ) )
+  txtcolorlego <- as.data.frame( txtcolorlego )
+  names( txtcolorlego ) <- c( "red", "green", "blue" )
 ######################
 # Analysis
 ######################
 # init
-  vfinfo0 <- vf[1,1:( visualFields::vfsettings$locini - 1 )]
-  vfinfo1 <- vf[1,1:( visualFields::vfsettings$locini - 1 )]
+  vfinfo0 <- vf[1,1:( locini - 1 )]
+  vfinfo1 <- vf[1,1:( locini - 1 )]
 # get indices for averages
-  locvalsidx <- visualFields::vfsettings$locini:( visualFields::vfsettings$locini + settings$locnum - length( settings$bs ) - 1 )
+  locvalsidx <- locini:( locini + settings$locnum - length( settings$bs ) - 1 )
   idx0 <- c( 1:grp )
   idx1 <- c( ( nrow( vf ) - grp + 1 ):nrow( vf ) )
 # get averages
@@ -113,7 +120,7 @@ names( txtcolorlego ) <- c( "red", "green", "blue" )
   color0 <- vfgrayscale( vf0, vfinfo0$sage, pattern = vfinfo0$tpattern, algorithm = vfinfo0$talgorithm )
   color1 <- vfgrayscale( vf1, vfinfo1$sage, pattern = vfinfo1$tpattern, algorithm = vfinfo1$talgorithm )
   par( fig = c( 0.5000, 0.985, 0.5833, 0.9200 ) )
-  vfplotloc( vf1 - vf0, eye = vfinfo0$seye, patternMap = locmap, outerColor = color0, innerColor = color1, axesCol = "white",
+  vfplotloc2( vf1 - vf0, eye = vfinfo0$seye, patternMap = locmap, outerColor = color0, innerColor = color1, axesCol = "white",
              txtfont = ffamilyvf, pointsize = pointsizelego, txtcolor = txtcolorlego,
              xminmax = xminmax, yminmax = yminmax,
              outerSymbol = outerSymbollego, innerSymbol = innerSymbollego,
@@ -124,7 +131,7 @@ names( txtcolorlego ) <- c( "red", "green", "blue" )
   par( fig = c( 0.0150, 0.5000, 0.2332,  0.5700 ) )
   color <- vfgrayscale( vf0, vfinfo0$sage, pattern =  vfinfo0$tpattern, algorithm = vfinfo0$talgorithm )
   vf0[which( vf0 < 0 )] <- "<0"
-  vfplotloc( vf0, eye = vfinfo0$seye, patternMap = locmap , outerColor = color, bs = c( vfinfo0$sbsx, vfinfo0$sbsy ), 
+  vfplotloc2( vf0, eye = vfinfo0$seye, patternMap = locmap , outerColor = color, bs = c( vfinfo0$sbsx, vfinfo0$sbsy ), 
              txtfont = ffamilyvf, pointsize = pointsize,
              xminmax = xminmax, yminmax = yminmax,
              outerSymbol = outerSymbol, innerSymbol = innerSymbol,
@@ -135,7 +142,7 @@ names( txtcolorlego ) <- c( "red", "green", "blue" )
   par( fig = c( 0.5000, 0.985, 0.2332,  0.5700 ) )
   color <- vfgrayscale( vf1, vfinfo0$sage, pattern =  vfinfo0$tpattern, algorithm = vfinfo0$talgorithm )
   vf1[which( vf1 < 0 ) ] <- "<0"
-  vfplotloc( vf1, eye = vfinfo1$seye, patternMap = locmap , outerColor = color, bs = c( vfinfo0$sbsx, vfinfo0$sbsy ), 
+  vfplotloc2( vf1, eye = vfinfo1$seye, patternMap = locmap , outerColor = color, bs = c( vfinfo0$sbsx, vfinfo0$sbsy ), 
              txtfont = ffamilyvf, pointsize = pointsize,
              xminmax = xminmax, yminmax = yminmax,
              outerSymbol = outerSymbol, innerSymbol = innerSymbol,
@@ -268,7 +275,7 @@ names( txtcolorlego ) <- c( "red", "green", "blue" )
 ######################################################
   seekViewport( "infobox3" )
 
-  text <- paste( "norm vals: ", visualFields::vfenv$nv$nvname, sep = "" )
+  text <- paste( "norm vals: ", nv$nvname, sep = "" )
   text <- paste( text, substr( packageDescription( "visualFields" )$Date, 1, 4 ), sep = "\n" )
   text <- paste( text, "visualFields", packageDescription( "visualFields" )$Version, sep = " " )
   grid.text( text, x = 0.50, y = 0.00, just = c( "center", "bottom" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxtSmall ) )

@@ -6,13 +6,16 @@ loadvfcsv <- function( filename, patternMap ) {
 # read data from file
   vf <- read.csv( filename )
 
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
+
 # remap locations to visualFields convention according to the pattern map.
 # Format is always OD (RE) and ordering from top-left to bottom-right,
 # reading row-wise. The structure vfsettings used here are part of the data
 # of visualField package; it has information about how the VF-object is
 # expected to be
-  vf2 <- vf[,visualFields::vfsettings$locini:ncol( vf )]
-  vf[,visualFields::vfsettings$locini:ncol( vf )] <- vf2[,patternMap$loc]
+  vf2 <- vf[,locini:ncol( vf )]
+  vf[,locini:ncol( vf )] <- vf2[,patternMap$loc]
   remove( vf2 )
   
 # convert all text columns into the correct class

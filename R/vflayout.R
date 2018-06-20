@@ -1,16 +1,15 @@
-vflayout <- function( vf, pwidth = 8.27,
-                      pheight = 11.69, margin = 0.25,
-                      filename = NULL,
-                      ffamily = "serif", sizetxt = 12,
-                      sizetxtSmall = 8, ffamilyvf = "serif",
-                      pointsize = 5,
-                      outerSymbol = "circle", outerInch = 0.13,
-                      innerSymbol = "circle", innerInch = outerInch / 1.9,
-                      lengthLines = 0, thicknessLines = 0 ) {
+vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filename = NULL ) {
 
   if( nrow( vf ) > 1 ) {
     stop("Error! vf cannot have more than 1 rows")
   }
+
+  txtfont   <- "serif"
+  pointsize <- 12
+
+  # get normative values
+  texteval <- "vfenv$nv"
+  nv       <- eval( parse( text = texteval ) )
 
 # open window wiht A4 page
   if( is.null( filename ) ) {
@@ -42,84 +41,33 @@ vflayout <- function( vf, pwidth = 8.27,
 ######################################################
 # first plot all graphs
 ######################################################
-  if( vf$tpattern == "p24d2" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "p30d2" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "p10d2" ) {
-    xminmax     <- 10
-    yminmax     <- 10
-  } else if( vf$tpattern == "p30d1" ) {
-    xminmax     <- 10
-    yminmax     <- 10
-  } else if( vf$tpattern == "p24d2v" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "p30d2v" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "p10d2v" ) {
-    xminmax     <- 10
-    yminmax     <- 10
-  } else if( vf$tpattern == "p30d1v" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "sgrnfl" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "p24d2csp" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else if( vf$tpattern == "p24d2SB" ) {
-    xminmax     <- 30
-    yminmax     <- 30
-  } else {
-    xminmax <- 100
-    yminmax <- 100
-  }
 # total-deviation plot
   opar <- par( no.readonly = TRUE )
-  par( fig = c( 0.3869, 0.9915, 0.5483, 0.9760 ) )
-  vfplot( vf, plotType = "td", txtfont = ffamilyvf, pointsize = pointsize,
-          xminmax = xminmax, yminmax = yminmax,
-          outerSymbol = outerSymbol, innerSymbol = innerSymbol,
-          outerInch = outerInch, innerInch = innerInch,
-          lengthLines = lengthLines, thicknessLines = thicknessLines )
+  par( fig = c( 0.42, 0.97, 0.55, 0.98 ) )
+  vfplot( vf, plotType = "td" )
 # sensitivity plot
   par( new = TRUE )
-  par( fig = c( 0.0109, 0.6155, 0.2746, 0.7023 ) )
-  vfplot( vf, plotType = "vf", txtfont = ffamilyvf, pointsize = pointsize,
-          xminmax = xminmax, yminmax = yminmax,
-          outerSymbol = outerSymbol, innerSymbol = innerSymbol,
-          outerInch = outerInch, innerInch = innerInch,
-          lengthLines = lengthLines, thicknessLines = thicknessLines )
-# pattern-deviation plot
+  par( fig = c( 0.02, 0.6, 0.28, 0.71 ) )
+  vfplot( vf, plotType = "vf" )
+  # pattern-deviation plot
   par( new = TRUE )
-  par( fig = c( 0.3869, 0.9915, 0.0060, 0.4337 ) )
-  vfplot( vf, plotType = "pd", txtfont = ffamilyvf, pointsize = pointsize,
-          xminmax = xminmax, yminmax = yminmax,
-          outerSymbol = outerSymbol, innerSymbol = innerSymbol,
-          outerInch = outerInch, innerInch = innerInch,
-          lengthLines = lengthLines, thicknessLines = thicknessLines )
-# stimulus locations
+  par( fig = c( 0.42, 0.97, 0.01, 0.44 ) )
+  vfplot( vf, plotType = "pd" )
+  # stimulus locations
   par( new = TRUE )
   par( fig = c( 0.769, 0.981, 0.42, 0.57 ) )
   par( mar = c( 0, 0, 0.5, 0.5 ) )
   stimLoc( perimetry = vf$tperimetry, pattern = vf$tpattern, eye = vf$seye,
-          txtfont = ffamilyvf, pointsize = pointsize,
-          xminmax = xminmax, yminmax = yminmax )
+          txtfont = txtfont, pointsize = pointsize )
 # Bebie difference curve
   par( new = TRUE )
-  par( fig = c( 0.007, 0.4039, 0.05, 0.2891 ) )
+  par( fig = c( 0.01, 0.4, 0.07, 0.3 ) )
   par( mar = c( 3.25, 4.2, 0.5, 0.5 ) )
-  bebie( tdrank( tdval( vf ) ), txtfont = ffamily, pointsize = sizetxt, cex = 0.75 )
+  bebie( tdrank( tdval( vf ) ), txtfont = txtfont, pointsize = pointsize, cex = 0.75 )
 # color-code map
   par( new = TRUE )
   par( fig = c( 0.03, 0.3869, 0.015, 0.060 ) )
-  colormapgraph( ncol = 6, txtfont = ffamilyvf, pointsize = pointsize, outerSymbol = outerSymbol, innerSymbol = innerSymbol,
-                 outerInch = outerInch, innerInch = innerInch )
+  colormapgraph( ncol = 6 )
   par( opar )
 
 ######################################################
@@ -127,25 +75,22 @@ vflayout <- function( vf, pwidth = 8.27,
 ######################################################
 # The two above are to delete once the graphs are generated!!!
   mainInfo  <- createviewport( "mainInfo",  left =  0.00, top =  0.00, width = 4.75, height = 0.40, pheight = mheight, pwidth = mwidth )
-  tdtext    <- createviewport( "tdtext",    left =  4.54, top =  0.00, width = 1.83, height = 0.22, pheight = mheight, pwidth = mwidth )
-  infobox2  <- createviewport( "infobox2",  left =  6.37, top =  0.00, width = 1.40, height = 0.40, pheight = mheight, pwidth = mwidth )
-  infobox3  <- createviewport( "infobox3",  left =  6.37, top = 10.89, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  tdtext    <- createviewport( "tdtext",    left =  4.75, top =  0.00, width = 1.83, height = 0.22, pheight = mheight, pwidth = mwidth )
   infobox1  <- createviewport( "infobox1",  left =  0.25, top =  0.50, width = 2.95, height = 0.40, pheight = mheight, pwidth = mwidth )
+  infobox2  <- createviewport( "infobox2",  left =  6.37, top =  0.00, width = 1.40, height = 0.40, pheight = mheight, pwidth = mwidth )
+  infobox3  <- createviewport( "infobox3",  left =  6.37, top = 11.00, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
   infotest1 <- createviewport( "infotest1", left =  0.25, top =  1.10, width = 1.20, height = 0.65, pheight = mheight, pwidth = mwidth )
   infotest2 <- createviewport( "infotest2", left =  1.55, top =  1.10, width = 0.60, height = 0.65, pheight = mheight, pwidth = mwidth )
   results1  <- createviewport( "results1",  left =  0.25, top =  1.95, width = 0.50, height = 1.10, pheight = mheight, pwidth = mwidth )
   results2  <- createviewport( "results2",  left =  0.85, top =  1.95, width = 0.70, height = 1.10, pheight = mheight, pwidth = mwidth )
   results3  <- createviewport( "results3",  left =  1.60, top =  1.95, width = 1.00, height = 1.10, pheight = mheight, pwidth = mwidth )
-  pdtext    <- createviewport( "pdtext",    left =  4.54, top =  6.34, width = 1.83, height = 0.22, pheight = mheight, pwidth = mwidth )
+  pdtext    <- createviewport( "pdtext",    left =  4.75, top =  6.34, width = 1.83, height = 0.22, pheight = mheight, pwidth = mwidth )
 
 # create the list and then generate the tree and "push" it
   list <- vpList( mainInfo, infobox1, infotest1, infotest2, results1, results2, results3, infobox2, infobox3, tdtext, pdtext )
   tree <- vpTree( printout, list )
 
   pushViewport( tree )
-
-#  seekViewport( "printout" )
-#  grid.rect( gp = gpar( col = "blue" ) )
 
 ######################################################
 # perimetry information
@@ -175,15 +120,15 @@ vflayout <- function( vf, pwidth = 8.27,
     texteye <- paste( texteye, "(which?)", sep = " " )
   }
   text <- paste( text, texteye, sep = " " )
-  grid.text( text, x = 0.0, y = 1.0, just = c( "left", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt, fontface = "bold" ) )
+  grid.text( text, x = 0.0, y = 1.0, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
 
 ######################################################
 # text: total deviation and pattern deviation
 ######################################################
   seekViewport( "tdtext" )
-  grid.text( "total deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = ffamily,fontsize = sizetxt ) )
+  grid.text( "total deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
   seekViewport( "pdtext" )
-  grid.text( "pattern deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = ffamily,fontsize = sizetxt ) )
+  grid.text( "pattern deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
 
 ######################################################
 # Details about printouts
@@ -230,17 +175,17 @@ vflayout <- function( vf, pwidth = 8.27,
   }
   
   text <- paste( textpattern, textalgorithm, sep = "\n" )
-  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
   ######################################################
   # Details about printouts
   ######################################################
   seekViewport( "infobox3" )
   
-  text <- paste( "norm vals: ", visualFields::vfenv$nv$nvname, sep = "" )
+  text <- paste( "norm vals: ", nv$nvname, sep = "" )
   text <- paste( text, substr( packageDescription( "visualFields" )$Date, 1, 4 ), sep = "\n" )
   text <- paste( text, "visualFields", packageDescription( "visualFields" )$Version, sep = " " )
-  grid.text( text, x = 1.00, y = 0.00, just = c( "right", "bottom" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxtSmall ) )
+  grid.text( text, x = 1.00, y = 0.00, just = c( "right", "bottom" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
 ######################################################
 # subject and test information
@@ -262,7 +207,7 @@ vflayout <- function( vf, pwidth = 8.27,
     text <- paste( text, paste( ", pause: ", timetxt, sep = "" ), sep = "" )
   }
   text <- paste( text, "", sep = "\n" )
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
 ######################################################
 # add false positives and negatives, fixation losses
@@ -272,7 +217,7 @@ vflayout <- function( vf, pwidth = 8.27,
   text <- "false positives"
   text <- paste( text, "false negatives", sep = "\n" )
   text <- paste( text, "fixation losses", sep = "\n" )
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
   seekViewport( "infotest2" )
 
@@ -283,7 +228,7 @@ vflayout <- function( vf, pwidth = 8.27,
   text <- sfp
   text <- paste( text, sfn, sep = "\n" )
   text <- paste( text, sfl, sep = "\n" )
-  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
 ######################################################
 # visual-field results
@@ -292,7 +237,7 @@ vflayout <- function( vf, pwidth = 8.27,
   vfsp <- vfstatspmap( vfs )
   vfi  <- vfindex( vf )
   vfip <- vfindexpmap( vfi )
-# general-height difference, if the used normative values have one.
+  # general-height difference, if the used normative values have one.
   texteval <- paste( "vfenv$nv$", vf$tpattern, "_", vf$talgorithm, "$nvtdrank$mtdr", sep = "" )
   tdr <- NULL
   tdr <- eval( parse( text = texteval ) )
@@ -315,7 +260,7 @@ vflayout <- function( vf, pwidth = 8.27,
   if( !is.null( tdr ) ) {
     text <- paste( text, "GH", sep = "\n" )
   }
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
   seekViewport( "results2" )
 
@@ -326,7 +271,7 @@ vflayout <- function( vf, pwidth = 8.27,
   if( !is.null( tdr ) ) {
     text <- paste( text, gh, sep = "\n" )
   }
-  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
   seekViewport( "results3" )
 
@@ -337,7 +282,7 @@ vflayout <- function( vf, pwidth = 8.27,
   text <- paste( text, textp, sep = "\n" )
   textp <- paste( "(p < ", vfip$mvfi, " %)", sep = "" )
   text <- paste( text, textp, sep = "\n" )
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = ffamily, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
 
 # only if in save mode, then set device to off
   if( !is.null( filename ) ) {
