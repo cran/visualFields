@@ -1,4 +1,4 @@
-0e7ac9149754b6577d6d29e5bd7d47c0 *DESCRIPTION
+0ba568411706ceccda17a4afc76ac1f1 *DESCRIPTION
 37fbe0bb6648f198768dc72b03bc8d25 *NAMESPACE
 0952a900757db6aa35bd96791ee141f3 *R/ageLinearModel.R
 28b27c8494779460a30ea410f56363de *R/agecalc.R
@@ -27,7 +27,7 @@ aaa1ae1aebf773edd3b80dd3ba392e66 *R/pdpmapghr.R
 ac4f2ee9c7d7ac57ca74f4a700778309 *R/pdvalghr.R
 5e4e8c3a5e7d280f2e21283737ddb2e5 *R/poplr.R
 d83466b1d0b119dff64e3b6eee477aa6 *R/poplr_cstat.R
-9cfc85a629026db8ad82c2859e909955 *R/poplr_pstat.R
+a0f4cb001a2320c149e09153b85d1d15 *R/poplr_pstat.R
 98dbbac1d4bffa0e93c0ffbd06c68a5e *R/progols.R
 e3c1c1ca1c8cd3c62b73250487106432 *R/psi2oct.R
 7194d0615d37931bd87e9b238e0986db *R/quad2Dfit.R
