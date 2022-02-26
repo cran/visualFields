@@ -15,14 +15,15 @@
 vfsfa <- function(vf, file, ...) {
   # always sort by ID, eye, date, and time
   vf <- vfsort(vf)
-  defpar <- par(no.readonly = TRUE) # read default par
-  on.exit(par(defpar))              # reset default par on exit, even if the code crashes
+  defmar <- par("mar") # read default par
+  defps  <- par("ps")
+  on.exit(par(mar = defmar, ps = defps)) # reset default par on exit, even if the code crashes
   pdf(file, width = 8.27, height = 11.69)
-  par(mar = c(0, 0, 0, 0), ...)
+  par(mar = c(0, 0, 0, 0))
+  par(ps = 10)
   for(i in 1:nrow(vf)) {
     scrlist <- mountlayoutsfa()
     vfiter <- vfselect(vf, i)
-    par(ps = 10)
     screen(scrlist$title)
     filltitle("Single Field Analysis")
     screen(scrlist$info)
@@ -38,12 +39,11 @@ vfsfa <- function(vf, file, ...) {
     screen(scrlist$vf)
     vfplot(vfiter, "s", mar = c(0, 0, 0, 0), ps = 8)
     screen(scrlist$td)
-    vfplot(vfiter, "td", mar = c(0, 0, 0, 0), ps = 8)
+    vfplot(vfiter, "tds", mar = c(0, 0, 0, 0), ps = 8)
     screen(scrlist$pd)
     vfplot(vfiter, "pd", mar = c(0, 0, 0, 0), ps = 8)
     screen(scrlist$col)
     drawcolscalesfa(getgpar()$colmap$map$probs, getgpar()$colmap$map$cols, ps = 6, ...)
-    par(ps = 10)
     screen(scrlist$foot)
     fillfoot()
     close.screen(all.screens = TRUE)
@@ -86,15 +86,16 @@ vfspa <- function(vf, file, type = "td", nperm = factorial(7),
   vf <- vfsort(vf)
   # run regression analyses
   res <- runregressions(vf, type, nperm, trunc, testSlope)
-  defpar <- par(no.readonly = TRUE) # read default par
-  on.exit(par(defpar))              # reset default par on exit, even if the code crashes
+  defmar <- par("mar") # read default par
+  defps  <- par("ps")
+  on.exit(par(mar = defmar, ps = defps)) # reset default par on exit, even if the code crashes
   pdf(file, width = 8.27, height = 11.69)
-  par(mar = c(0, 0, 0, 0), ...)
+  par(mar = c(0, 0, 0, 0))
+  par(ps = 10)
   for(i in 1:length(res)) {
     # for each subject/eye
     scrlist <- mountlayoutspa()
-    vfeye <- filter(vf, !!sym("id") == res[[i]]$id, !!sym("eye") == res[[i]]$eye)
-    par(ps = 10)
+    vfeye <- vffilter(vf, !!sym("id") == res[[i]]$id, !!sym("eye") == res[[i]]$eye)
     screen(scrlist$title)
     filltitle("Series Progression Analysis")
     screen(scrlist$info)
@@ -118,13 +119,13 @@ vfspa <- function(vf, file, type = "td", nperm = factorial(7),
     screen(scrlist$int)
     vfint <- vfselect(vfeye, sel = 1) # get first
     vfint[,getvfcols()] <- plr(vfeye, type = "s")$int
-    vfplot(vfint, type, mar = c(0, 0, 0, 0), ps = 8)
+    vfplot(vfint, type = "tds", mar = c(0, 0, 0, 0), ps = 8)
     screen(scrlist$sl)
     vfplotplr(vfeye, type, mar = c(0, 0, 0, 0), ps = 8)
     screen(scrlist$col)
     drawcolscalespa(getgpar()$progcolmap$b$map$probs, getgpar()$progcolmap$b$map$cols, ps = 6, ...)
     screen(scrlist$spark)
-    vfplotsparklines(vfeye, type, mar = c(0, 0, 0, 0), ps = 8)
+    vfsparklines(vfeye, type, mar = c(0, 0, 0, 0), ps = 8)
     screen(scrlist$poplrb)
     drawhist(res[[i]]$poplr, alternative = "GT")
     screen(scrlist$poplrw)
@@ -135,7 +136,6 @@ vfspa <- function(vf, file, type = "td", nperm = factorial(7),
     drawgi(res[[i]]$md, ylab = "Mean Deviation", ps = 8)
     screen(scrlist$gh)
     drawgi(res[[i]]$gh, ylab = "General Height", ps = 8)
-    par(ps = 10)
     screen(scrlist$foot)
     fillfoot()
     close.screen(all.screens = TRUE)
@@ -218,13 +218,13 @@ vfsfashiny <- function(vf, ...) {
     # show the sensitivity plots (if that tab is selected in the UI)
     output$s    <- renderPlot(vfplot(vfsel(), type = "s"))
     # show the total-deviation maps (if that tab is selected in the UI)
-    output$td   <- renderPlot(vfplot(vfsel(), type = "td"))
+    output$td   <- renderPlot(vfplot(vfsel(), type = "tds"))
     # show the pattern-deviation maps (if that tab is selected in the UI)
     output$pd   <- renderPlot(vfplot(vfsel(), type = "pd"))
     # show col scales for TD or PD probability maps
     output$ctd  <- renderPlot(drawcolscalesfa(getgpar()$colmap$map$probs, getgpar()$colmap$map$cols, ps = 8, ...)) # col scale for TD probability maps
     output$cpd  <- renderPlot(drawcolscalesfa(getgpar()$colmap$map$probs, getgpar()$colmap$map$cols, ps = 8, ...)) # col scale for TD probability maps. Redundant but necessary
-    output$dum  <- renderPlot({})         # for senstivity values, we need not plot col scale, but need this for consistent formatting
+    output$dum  <- renderPlot({}) # for senstivity values, we need not plot col scale, but need this for consistent formatting
   }
   shinyApp(ui, server)
 }
@@ -300,12 +300,12 @@ vfspashiny <- function(vf, type = "td", nperm = factorial(7),
     output$bas  <- renderPlot({
       vfint <- vfselect(vfseries(), sel = 1) # get first
       vfint[,getvfcols()] <- plr(vfseries(), type = "s")$int
-      vfplot(vfint, type, mar = c(0, 0, 0, 0))
+      vfplot(vfint, type = "tds", mar = c(0, 0, 0, 0))
     })
     # show the pointwise linear regression plot
     output$plr  <- renderPlot(vfplotplr(vfseries(), type, mar = c(0, 0, 0, 0)))
     # show the sparklines plot
-    output$skl  <- renderPlot(vfplotsparklines(vfseries(), type, mar = c(0, 0, 0, 0)))
+    output$skl  <- renderPlot(vfsparklines(vfseries(), type, mar = c(0, 0, 0, 0)))
     # show the probability scales
     output$cbas <- renderPlot(drawcolscalesfa(getgpar()$colmap$map$probs, getgpar()$colmap$map$cols, ps = 8, ...))
     output$cplr <- renderPlot(drawcolscalesfa(getgpar()$progcolmap$b$map$probs, getgpar()$progcolmap$b$map$cols, ps = 8, ...))
@@ -517,8 +517,6 @@ drawcolscalesfa <- function(probs, cols, ...) {
   }
   x <- xini + 1:length(probs)
   y <- rep(0, length(probs))
-  defpar <- par(no.readonly = TRUE) # read default par
-  on.exit(par(defpar))              # reset default par on exit, even if the code crashes
   par(mar = c(0, 0, 0, 0), ...)
   plot(x, y, typ = "n", ann = FALSE, axes = FALSE,
        xlim = c(1, 25), ylim = c(-0.25, 0.25), asp = 1)
@@ -549,9 +547,6 @@ drawcolscalespa <- function(probs, cols, ...) {
   }
   x <- xini + 1:length(probs)
   y <- rep(0, length(probs))
-  defpar <- par(no.readonly = TRUE) # read default par
-  on.exit(par(defpar))              # reset default par on exit, even if the code crashes
-  par(mar = c(0, 0, 0, 0), ...)
   plot(x, y, typ = "n", ann = FALSE, axes = FALSE,
        xlim = c(1, 17), ylim = c(-0.25, 0.25), asp = 1)
   for(i in 1:length(x)) polygon(pol[[i]], border = NA, col = cols[i])

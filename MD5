@@ -1,5 +1,5 @@
-b146bfec1d8fbe687dfeab8ab1531f10 *DESCRIPTION
-1553abc412be83e495269051a73fc840 *NAMESPACE
+eea53f95c3cdb2c2e2a97f15af22e6c7 *DESCRIPTION
+f51928c084e308d7685df07a12f77b36 *NAMESPACE
 c9ed260edaaa6c2df1e620735f0ffb04 *R/data-drasdolut.R
 b0cee807d10f62665658282bb2849389 *R/data-gpars.R
 bcff9911a90ddf5aa49b7a4a1ace7926 *R/data-locmaps.R
@@ -14,14 +14,14 @@ e8ff88cc7364b2995640fb91d0342d0a *R/jansonius.R
 e297d9079c2baa3541b230a6d03a1024 *R/linreg.R
 d3c33e0013880bae6d41a2d7484bc113 *R/locmap.R
 d5cdc16b86fdb23bf14b732d4a2f0318 *R/nv.R
-35c27ae39caa8529084058ab5ef8dfac *R/vf.R
-66b030efc7ff28b645e7b43b5752d79b *R/vfloaders.R
-78a93ca7e232f80ba03bcbbabfd6e696 *R/vfplots.R
-5b007b780875840f0625bc90700e0c47 *R/vfreports.R
+c85c33d7844d404039526eca604bedf6 *R/vf.R
+f2b0a121c02ec5423a33be40d51dfa72 *R/vfloaders.R
+6ae7157446ab8319963db954254ae716 *R/vfplots.R
+603337010a4a44a3620a8e12b65396a6 *R/vfreports.R
 47d07d2377310493e7c9be4af2e34ea6 *R/vfstats.R
 9fbb7831d2945519127bd5183b8c3ef4 *R/visualFields.R
 cb1795e6b3bb905d816f740bb0bf097f *data/drasdolut.rda
-c44403f4f4b550510d14c8f1b2b93206 *data/gpars.rda
+9cf902f4825ad548fd8bed12e98d01a8 *data/gpars.rda
 f6a206c2c9fd0178148e3b626a38cd6a *data/locmaps.rda
 0616b82579ad24f9b8450dc2815ce24e *data/normvals.rda
 52cff13322f0369ce80d080b7c113fa8 *data/vfctrIowaPC26.rda
@@ -49,7 +49,7 @@ ce1151a85e6ab37d6db91afc0dae3f49 *man/vfctrIowaPC26.Rd
 38e8fbce811a41bfada39bc56ab83b4e *man/vfctrSunyiu24d2.Rd
 736e77a357479445e39059dcf96d1cd5 *man/vfenv.Rd
 5b410ad9b4c34a2712b2987f4bc930da *man/vfloaders.Rd
-cf5c4fe9147b1efb83b7ee42eb61d39c *man/vfplots.Rd
+7620d9b9fb5f74e9cf5ea8178a64b4a2 *man/vfplots.Rd
 7246d8029b09aefebe6aeaa3c7ce399e *man/vfpwgRetest24d2.Rd
 92d689fa1c715d3ace2414886006294d *man/vfpwgSunyiu24d2.Rd
 d34ccad3b9fc026e1fda996874494cf4 *man/vfstats.Rd
