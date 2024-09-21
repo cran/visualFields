@@ -6,13 +6,8 @@
 \alias{vfcolscheme}
 \alias{vfprogcolscheme}
 \alias{vfplot}
-\alias{vfplotsens}
-\alias{vfplotdev}
-\alias{vfplotsdev}
 \alias{vfplotplr}
 \alias{vflegoplot}
-\alias{vflegoplotsens}
-\alias{vflegoplotdev}
 \alias{vfsparklines}
 \title{Plots for visual fields data}
 \usage{
@@ -48,21 +43,13 @@ vfcolscheme(
 
 vfprogcolscheme(
   probs = c(0, 0.005, 0.01, 0.02, 0.05, 0.95, 1),
-  cols = c("#000000", colorRampPalette(c("#FF0000", "#FFFF00"))(4), "#F7F0EB",
-    "#008000")
+  cols = c("#000000", colorRampPalette(c("#FF0000", "#FFFF00"))(4), "#F7F0EB", "#008000")
 )
 
-vfplot(vf, type = "td", ...)
-
-vfplotsens(gpar, vf, maxval, digits = 0, ...)
-
-vfplotdev(gpar, vf, dev, devp, digits = 0, ...)
-
-vfplotsdev(gpar, vf, maxval, dev, devp, digits = 0, ...)
+vfplot(vf, td = NULL, tdp = NULL, pd = NULL, pdp = NULL, type = "td", ...)
 
 vfplotplr(
   vf,
-  type = "td",
   alternative = "LT",
   xoffs = 0,
   yoffs = 0,
@@ -73,24 +60,18 @@ vfplotplr(
   ...
 )
 
-vflegoplot(vf, type = "td", grp = 3, ...)
-
-vflegoplotsens(gpar, vfb, vfl, maxb, maxl, crad = 2, digits = 1, ...)
-
-vflegoplotdev(
-  gpar,
-  vfb,
-  devb,
-  devpb,
-  vfl,
-  devl,
-  devpl,
-  crad = 2,
-  digits = 1,
+vflegoplot(
+  vf,
+  type = "td",
+  grp = 3,
+  addSpark = FALSE,
+  thr = 2,
+  width = 4,
+  height = 2,
   ...
 )
 
-vfsparklines(vf, type = "td", thr = 2, width = 4, height = 2, add = FALSE, ...)
+vfsparklines(vf, thr = 2, width = 4, height = 2, add = FALSE, ...)
 }
 \arguments{
 \item{coord}{print x and y coordinates. Check section
@@ -120,9 +101,21 @@ not equal (NE)}
 \item{bprobs, bcols}{color map for progression with blth alternative
 hypotheses LT and GT (B for both)}
 
-\item{delta}{Distance over which the boundary should be shifted. See for \code{\link{polyclip}}}
+\item{delta}{Distance over which the boundary should be shifted. See for \code{polyclip}}
 
 \item{vf}{the visual fields data to plot}
+
+\item{td}{the total deviation values. If \code{NULL} (default) then use
+visualFields normative values}
+
+\item{tdp}{the total deviation probability values. If \code{NULL} (default)
+then use visualFields normative values}
+
+\item{pd}{the pattern deviation values. If \code{NULL} (default) then use
+visualFields normative values}
+
+\item{pdp}{the pattern deviation probability values. If \code{NULL} (default)
+then use visualFields normative values}
 
 \item{type}{the type of data to plot: sensitivities (`\code{s}`),
 total deviation values (`\code{td}`), pattern deviation values (`\code{pd}`),
@@ -131,16 +124,6 @@ probability levels (`\code{tds}`), or PD values and corresponding probability
 levels (`\code{pds}`). Default is `\code{td}`.}
 
 \item{...}{other graphical arguments. See \code{\link{plot}}}
-
-\item{gpar}{graphical parameters}
-
-\item{maxval}{maximum value, typically in dB, for the generation of a grayscale}
-
-\item{digits}{digits to round values to plot. Default is 0}
-
-\item{dev}{deviation (TD or PD) values}
-
-\item{devp}{deviation (TD or PD) probability values}
 
 \item{alternative}{alternative hypothesis used in progression analyses.
 Allowed values are `\code{LT}` (as in "lower than", default),
@@ -168,24 +151,6 @@ Default is `\code{2}` (dB)}
 \item{grp}{number of baseline (first) and last visual fields to group.
 Default is `\code{3}`}
 
-\item{vfb}{baseline visual field data}
-
-\item{vfl}{last visual field data}
-
-\item{maxb}{maximum value for the grayscale at baseline visual field data}
-
-\item{maxl}{maximum value for the grayscale for last visual field data}
-
-\item{crad}{radius of the circle in the legoplot}
-
-\item{devb}{baseline visual field (TD or PD) deviation values}
-
-\item{devpb}{baseline visual field (TD or PD) deviation probability values}
-
-\item{devl}{last visual field (TD or PD) deviation values}
-
-\item{devpl}{last visual field (TD or PD) deviation probability values}
-
 \item{add}{whether to generate a new plot (`\code{FALSE}`, as default)
 or to add to an existing figure (`\code{TRUE}`)}
 }
@@ -202,19 +167,9 @@ to be used for vfplots
 
 \code{vfplot} No return value
 
-\code{vfplotsens} No return value
-
-\code{vfplotdev} No return value
-
-\code{vfplotsdev} No return value
-
 \code{vfplotplr} No return value
 
 \code{vflegoplot} No return value
-
-\code{vflegoplotsens} No return value
-
-\code{vflegoplotdev} No return value
 
 \code{vfsparklines} No return value
 }
@@ -321,11 +276,11 @@ vfplot(vfselect(vffilter(vfpwgRetest24d2, id == 1), n = 1), type = "pds")
 # plot results from pointwise linear regression for the series of
 # visual fields for the right eye in the dataset vfpwgSunyiu24d2
 # with sensitivity values
-vfplotplr(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "s")
+vfplotplr(vffilter(vfpwgSunyiu24d2, eye == "OD"))
 # TD values
-vfplotplr(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "td")
+vfplotplr(gettd(vffilter(vfpwgSunyiu24d2, eye == "OD")))
 # PD values
-vfplotplr(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "pd")
+vfplotplr(getpd(gettd(vffilter(vfpwgSunyiu24d2, eye == "OD"))))
 # legoplot for the series of visual fields for the right eye
 # of the subject in the dataset vfpwgSunyiu24d2
 # with sensitivity values
@@ -337,9 +292,9 @@ vflegoplot(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "pd")
 # sparklines for the series of visual fields for the right eye of
 # the subject in the dataset vfpwgSunyiu24d2
 # with sensitivity values
-vfsparklines(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "s")
+vfsparklines(vffilter(vfpwgSunyiu24d2, eye == "OD"))
 # TD values
-vfsparklines(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "td")
+vfsparklines(gettd(vffilter(vfpwgSunyiu24d2, eye == "OD")))
 # PD values
-vfsparklines(vffilter(vfpwgSunyiu24d2, eye == "OD"), type = "pd")
+vfsparklines(getpd(gettd(vffilter(vfpwgSunyiu24d2, eye == "OD"))))
 }

@@ -100,14 +100,16 @@
 #'   "SITA standard". Default is blank
 #' @param size stimulus size, if the same size was used for all visual field
 #'   locations or empty (default)
+#' @param agem Age model
+#' @param tdfun Function for the calculation of total deviation maps
+#' @param ghfun Function to obtain an estimate of the general height
+#' @param pdfun Function for the calculation of pattern deviation maps
 #' @return \code{nvgenerate} returns a list with normative values
 #' @export
 nvgenerate <- function(vf, method = "pointwise",
-                       probs     = c(0, 0.005, 0.01, 0.02, 0.05, 0.95, 0.98, 0.99, 0.995, 1),
-                       name      = "",
-                       perimetry = "static automated perimetry",
-                       strategy  = "",
-                       size      = "") {
+                       probs = c(0, 0.005, 0.01, 0.02, 0.05, 0.95, 0.98, 0.99, 0.995, 1),
+                       name = "", perimetry = "static automated perimetry", strategy = "", size = "",
+                       agem = agelm(vf), tdfun = tddef(agem), ghfun = ghdef(0.85), pdfun = pddef(ghfun)) {
   if(method != "pointwise" && method != "smooth")
     stop("wrong method for generating normative values")
   if(any(probs < 0) || any(probs > 1))
@@ -116,17 +118,11 @@ nvgenerate <- function(vf, method = "pointwise",
     stop("probability values must include values 0 and 1")
   probs <- sort(probs)
   info <- list(name = name, perimetry = perimetry, strategy = strategy, size = size)
-  # construct the default age linear model
-  agem <- agelm(vf)
   if(method == "smooth") { # smooth out intercepts and slopes
     agem$coeff$intercept <- vfsmooth(agem$coeff$intercept)
     agem$coeff$slope     <- vfsmooth(agem$coeff$slope)
     environment(agem$model)$coeff <- t(as.matrix(agem$coeff))
   }
-  # define the functions for the default methods to compute TD, GH, and PD
-  tdfun <- tddef(agem)
-  ghfun <- ghdef(0.85)
-  pdfun <- pddef(ghfun)
   # get TD and PD values, ...
   td <- tdfun(vf)
   pd <- pdfun(td)
@@ -226,7 +222,7 @@ pddef <- function(ghfun = ghdef(0.85))
 
 #' @rdname nv
 #' @param type type of estimation for the weighted quantile values. See
-#'   \code{\link{wtd.quantile}} for details. Default is `\code{quantile}`
+#'   \code{wtd.quantile} for details. Default is `\code{quantile}`
 #' @param ... arguments to be passed to or from methods
 #' @return \code{lutdef} returns a look up table and a function for the
 #' computation of the probability values for TD and PD
@@ -235,8 +231,8 @@ lutdef <- function(vf, probs, type = "quantile", ...) {
   counts <- table(vf$id)
   w <- as.numeric(1 / rep(counts, counts))
   vf <- vf[,getvfcols()] # remove info fields
-  nacols <- which(apply(is.na(vf), 2, all)) # awkward patch because wtd.quantile
-  vf[,nacols] <- 0                          # does not tolerate columns with NA
+  nacols <- which(apply(is.na(vf), 2, all))
+  vf[,nacols] <- 0
   # probability level look up table
   lut <- apply(vf, 2, wtd.quantile, type = type, na.rm = TRUE,
                weights = w, normwt = FALSE, probs = probs, ...)
@@ -321,8 +317,8 @@ lutgdef <- function(g, probs, type = "quantile", ...) {
   counts <- table(g$id)
   w <- as.numeric(1 / rep(counts, counts))
   g <- g[,getlocini():ncol(g)] # remove key fields
-  nacols <- which(apply(is.na(g), 2, all)) # awkward patch because wtd.quantile
-  g[,nacols] <- 0                          # does not tolerate columns with NA
+  nacols <- which(apply(is.na(g), 2, all))
+  g[,nacols] <- 0
   # probability level look up table
   lut <- matrix(NA, length(probs), ncol(g))
   colnames(lut) <- names(g)
@@ -346,7 +342,7 @@ lutgdef <- function(g, probs, type = "quantile", ...) {
     g <- g[,getlocini():ncol(g)]
     gp <- as.data.frame(matrix(NA, nrow(g), ncol(g)))
     names(gp) <- names(g)
-    # analysys for means (greater is better) is different than for SDs (greater is worse)
+      # analysis for means (greater is better) is different than for SDs (greater is worse)
     gm   <- g[,idxm]
     lutm <- lut[,idxm]
     gpm  <- gp[,idxm]

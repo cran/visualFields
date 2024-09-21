@@ -9,7 +9,7 @@
 #' on visual field pattern deviation values and normative values. The list that is returned
 #' with the \code{loadoctopus} loader contains data frames which are structured with keys so that
 #' redundancy is minimized (similar to a relational database). Detailed examples for
-#' \code{loadoctopus}: \url{https://rpubs.com/huchzi/645357}
+#' \code{loadoctopus}: \url{https://huchzi.github.io/vf1/loadOctopus.html}
 #' @param file file to load (it is a XML extracted with the export license for
 #' the HFA loader), a CSV outputed by the Eyesuite software for the Octopus
 #' perimeter and a CSV with two columns for the batch HFA loader. The two columns
@@ -119,13 +119,14 @@ loadhfaxml <- function(file, type = "pwg", repeated = mean) {
   if("GLOBAL_INDICES" %in% names(dat)) {
     vals <- vf[,getvfcols()]
     if(length(bs) > 1) vals <- vals[,-bs]
+    vfi <- as.numeric(dat$GLOBAL_INDICES$VFI)
     g <- data.frame(msens = apply(vals, 1, mean),
                     ssens = apply(vals, 1, sd),
                     tmd = as.numeric(dat$GLOBAL_INDICES$MD),
                     tsd = NA,
                     pmd = NA,
                     psd = as.numeric(dat$GLOBAL_INDICES$PSD),
-                    vfi = as.numeric(dat$GLOBAL_INDICES$VFI))
+                    vfi = ifelse(is.null(vfi), NA, vfi))
     gp <- data.frame(msens = NA,
                      ssens = NA,
                      tmd = cutoffs[1 + as.numeric(dat$GLOBAL_INDICES$MD_PROBABILITY)],
@@ -145,8 +146,6 @@ loadhfadicom <- function(file, type = "pwg", repeated = mean) {
   vf <- td <- tdp <- pd <- pdp <- g <- gp <- NA
   # load and arrange data for processing
   dat <- readDICOMFile(file)$hdr
-  dat <- as.data.frame(eval(parse(text = paste0("dat$`", file, "`"))),
-                       stringsAsFactors = FALSE)
   # extract the groups we are interested on
   groups <- sort(unique(dat$group))
   # get test grid
@@ -164,7 +163,7 @@ loadhfadicom <- function(file, type = "pwg", repeated = mean) {
   age <- getage(dob, date)
   eye <- switch(dicomelement(dat, groups[5], "Laterality"), "L" = "OS", "R" = "OD")
   time <- round(as.numeric(dicomelement(dat, groups[8], "PerformedProcedureStepStartTime")))
-  time <- substr(gsub('(?=(?:.{2})+$)', ":", time, perl = TRUE), 2, 9)
+  time <- gsub('(?=(?:.{2})+$)', ":", time, perl = TRUE)
   duration <- formatDuration(as.numeric(dicomelement(dat, groups[7], "VisualFieldTestDuration")))
   # get false positives, false negatives, and fixation losses
   if(dicomelement(dat, groups[7], "FalsePositivesEstimateFlag") == "YES") {
@@ -195,10 +194,9 @@ loadhfadicom <- function(file, type = "pwg", repeated = mean) {
     pdp  = as.numeric(dicomelement(dat, groups[7], "GeneralizedDefectCorrectedSensitivityDeviationProbabilityValue")),
     seen = dicomelement(dat, groups[7], "StimulusResults")
   )
-  if(length(bs) > 1) s$td[bs] <- s$tdp[bs] <- s$pd[bs] <- s$pdp[bs] <- NA
   s$val[s$seen == "NOT SEEN"] <- -2
   s$seen <- NULL
-  if(eye == "OS") s$x <- -s$y
+  if(eye == "OS") s$x <- -s$x
   s <- s[order(s$x),]
   s <- s[order(-s$y),]
   vf  <- cbind(info, t(s$val))
@@ -206,8 +204,8 @@ loadhfadicom <- function(file, type = "pwg", repeated = mean) {
   tdp <- cbind(info, t(s$tdp))
   pd  <- cbind(info, t(s$pd))
   pdp <- cbind(info, t(s$pdp))
-  names(vf)[getvfcols()] <- names(td)[getvfcols()] <- names(tdp)[getvfcols()] <- 
-    names(pd)[getvfcols()] <- names(pdp)[getvfcols()] <- paste0("l", 1:nrow(s))
+  names(vf)[getlocini():ncol(vf)] <- names(td)[getlocini():ncol(td)] <- names(tdp)[getlocini():ncol(tdp)] <- 
+    names(pd)[getlocini():ncol(pd)] <- names(pdp)[getlocini():ncol(pdp)] <- paste0("l", 1:nrow(s))
   cutoffs <- c(50, NA, 5, 2, 1, 0.5) / 100 # cutoff lookup for probability levels of global indices
   if("GLOBAL_INDICES" %in% names(dat)) {
     vals <- vf[,getvfcols()]
