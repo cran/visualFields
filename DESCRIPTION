@@ -1,8 +1,8 @@
 Package: visualFields
 Type: Package
 Title: Statistical Methods for Visual Fields
-Version: 1.0.5
-Date: 2024-09-19
+Version: 1.0.7
+Date: 2025-01-17
 Authors@R: c(
     person("Ivan", "Marin-Franch", email="imarinfr@optocom.es", role = c("cre", "aut", "rev", "cph")),
     person("William H", "Swanson", role = c("fnd", "dtc")),
@@ -31,7 +31,7 @@ LazyDataCompression: xz
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-09-21 10:24:00 UTC; imarinfr
+Packaged: 2025-01-17 16:31:57 UTC; imarinfr
 Author: Ivan Marin-Franch [cre, aut, rev, cph],
   William H Swanson [fnd, dtc],
   Michael Wall [fnd, dtc],
@@ -41,4 +41,4 @@ Author: Ivan Marin-Franch [cre, aut, rev, cph],
   Giovanni Montesano [ctb],
   Mitchell W Dul [dtc]
 Repository: CRAN
-Date/Publication: 2024-09-21 10:50:03 UTC
+Date/Publication: 2025-01-17 17:20:02 UTC
